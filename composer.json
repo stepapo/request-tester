@@ -1,0 +1,29 @@
+{
+	"name": "stepapo/url-tester",
+	"type": "library",
+	"description": "Tester for Nette web applications.",
+	"keywords": ["nette", "tester", "web", "url"],
+	"homepage": "https://github.com/stepapo/url-tester",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Štěpán Postler"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/stepapo/url-tester/issues"
+	},
+	"require": {
+		"php": ">=8.0",
+		"nette/application": "^3.1",
+		"nette/http": "^3.1",
+		"nette/routing": "^3.0",
+		"nette/tester": "^2.4",
+		"nette/utils": "^3.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"Stepapo\\UrlTester\\": "src/"
+		}
+	}
+}
