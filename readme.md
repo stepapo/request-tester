@@ -99,7 +99,7 @@ requests:
 
 ### Request
 
-Request configuration requires a URL and asserts. Request can have subrequests that inherit parent request configuration and overrides it with their own if needed.
+Request configuration requires a URL and asserts. Request can have subrequests that inherit parent request configuration and overrides some of it with their own if needed.
 
 ```neon
 url: auth
