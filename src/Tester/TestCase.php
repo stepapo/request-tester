@@ -7,7 +7,6 @@ use Stepapo\UrlTester\Config\RequestConfig;
 use Stepapo\UrlTester\Helper;
 use Stepapo\UrlTester\Config\TestConfig;
 use Stepapo\UrlTester\UrlTester;
-use Tester\AssertException;
 
 
 abstract class TestCase extends \Tester\TestCase
@@ -98,14 +97,6 @@ abstract class TestCase extends \Tester\TestCase
 			if ($config->assertConfig->json) {
 				$result->assertJson($this->helper->prepareValues($config->assertConfig->json));
 			}
-		}
-	}
-	public function runTest(string $method, array $args = null): void
-	{
-		try {
-			parent::runTest($method, $args);
-		} catch (AssertException $e) {
-			throw $e->setMessage(sprintf('%s', $e->origMessage));
 		}
 	}
 

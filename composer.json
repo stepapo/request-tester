@@ -1,8 +1,8 @@
 {
 	"name": "stepapo/url-tester",
 	"type": "library",
-	"description": "Tester for web applications, that use of Nette Application, Security and Forms components.",
-	"keywords": ["nette", "tester", "application", "forms", "security"],
+	"description": "Tester for Nette web applications.",
+	"keywords": ["nette", "tester", "web", "url"],
 	"homepage": "https://github.com/stepapo/url-tester",
 	"license": "MIT",
 	"authors": [

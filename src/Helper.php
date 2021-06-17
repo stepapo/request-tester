@@ -64,11 +64,9 @@ class Helper
 	{
 		$return = [];
 		foreach ($values as $key => $value) {
-			if (is_array($value)) {
-				$return[$key] = $this->prepareValues($value, $toString);
-			} else {
-				$return[$key] = $this->prepareValue($value, $toString);
-			}
+			$return[$key] = is_array($value)
+				? $this->prepareValues($value, $toString)
+				: $this->prepareValue($value, $toString);
 		}
 		return $return;
 	}
