@@ -14,34 +14,34 @@ Use `tests/config/authorization.neon` to define a test:
 name: authorization
 url: auth
 requests:
-	with wrong name:
-		form:
-			name: signupForm
-			post:
-				login: WRONG_NAME
-				password: secret1234
-		asserts:
-			renders: This login does not exist
-	with wrong passowrd:  
-		form:
-			name: signupForm
-			post:
-				login: name@example.com
-				password: WRONG_PASSWORD
-		asserts:
-			renders: The password is wrong
-	with wrong address:
-		url: auht
-		asserts:
-			httpCode: 404
-	with correct input:
-		form:
-			name: signupForm
-			post:
-				login: name@example.com
-				password: secret1234
-		asserts:
-			renders: Login successful
+    with wrong name:
+        form:
+            name: signupForm
+            post:
+                login: WRONG_NAME
+                password: secret1234
+        asserts:
+            renders: This login does not exist
+    with wrong passowrd:  
+        form:
+            name: signupForm
+            post:
+                login: name@example.com
+                password: WRONG_PASSWORD
+        asserts:
+            renders: The password is wrong
+    with wrong address:
+        url: auht
+        asserts:
+            httpCode: 404
+    with correct input:
+        form:
+            name: signupForm
+            post:
+                login: name@example.com
+                password: secret1234
+        asserts:
+            renders: Login successful
 ```
 
 ### Data provider
@@ -54,8 +54,8 @@ require __DIR__ . '/../vendor/autoload.php';
 $return = [];
 
 foreach (Nette\Utils\Finder::findFiles('*.neon')->from(__DIR__ . '/config') as $file) {
-	$config = (array) Nette\Neon\Neon::decode(Nette\Utils\FileSystem::read($file));
-	$return[$config['name']] = $config;
+    $config = (array) Nette\Neon\Neon::decode(Nette\Utils\FileSystem::read($file));
+    $return[$config['name']] = $config;
 }
 
 return $return;
@@ -88,8 +88,8 @@ Specific URL Tester printer can be used for outputing results instead of basic N
 require __DIR__ . '/../vendor/autoload.php';
 
 $runner->outputHandlers[] = new Stepapo\UrlTester\Tester\UrlPrinter(
-	$runner,
-	require __DIR__ . '/config.php',
+    $runner,
+    require __DIR__ . '/config.php',
 );
 ```
 
@@ -99,11 +99,11 @@ To run tests use standard Nette Tester command. Make sure testing database is pr
 
 Basic command:
 
-	$ tester tests
+    $ tester tests
 
 Command with setup:
 
-	$ tester --setup tests/runner-setup.php -o none -c tests/php.ini --coverage tests/coverage.html --coverage-src app -j 8 --cider tests
+    $ tester --setup tests/runner-setup.php -o none -c tests/php.ini --coverage tests/coverage.html --coverage-src app -j 8 --cider tests
 
 ## Configuration
 
@@ -116,8 +116,8 @@ Test is defined by `name` and list of `requests`.
 ```neon
 name: authorization
 requests:
-	example request: # include Request configuration    
-	another example request: # include Request configuration
+    example request: # include Request configuration    
+    another example request: # include Request configuration
 ```
 
 ### Request
@@ -130,8 +130,8 @@ identity: # include Identity configuration
 form: # include Form configuration
 asserts: # include Assert configuration
 requests:
-	example subrequest: # include Request configuration    
-	another example subrequest: # include Request configuration
+    example subrequest: # include Request configuration    
+    another example subrequest: # include Request configuration
 ```
 
 ### Identity
@@ -141,8 +141,8 @@ requests:
 ```neon
 id: 1
 roles:
-	- user
-	- admin
+    - user
+    - admin
 ```
 
 ### Form
@@ -150,8 +150,8 @@ roles:
 ```neon
 name: signupForm
 post:
-	login: name@domain.com
-	password: secret1234
+    login: name@domain.com
+    password: secret1234
 ```
 
 ### Assert
@@ -166,15 +166,15 @@ Validating what is rendered in browser or not:
 
 ```neon
 renders:
-	- Login successful
+    - Login successful
 notRenders:
-	- Login required
+    - Login required
 ```
 
 Validating result of API call:
 
 ```neon
 json:
-	id: 1
-	name: John Doe
+    id: 1
+    name: John Doe
 ```
