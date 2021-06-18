@@ -103,7 +103,7 @@ Basic command:
 
 Command with setup:
 
-	$ tester --setup tests/runner-setup.php -c tests/php.ini --coverage tests/coverage.html --coverage-src app -j 8 --cider tests
+	$ tester --setup tests/runner-setup.php -o none -c tests/php.ini --coverage tests/coverage.html --coverage-src app -j 8 --cider tests
 
 ## Configuration
 
