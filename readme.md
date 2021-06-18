@@ -1,6 +1,6 @@
 # URL Tester
 
-URL Tester is an extension for Nette Framework used for testing web applications. It validates rendered content based on what URL is requested, which user is logged in or what data was submitted through a form. The docs show basic example and explains ways of configurating tests.
+URL Tester is an extension for Nette Framework used for testing web applications. It validates rendered content based on what URL is requested, which user is logged in or what data was submitted through a form. The docs show basic example and explain ways of configurating tests.
 
 ## Example
 
