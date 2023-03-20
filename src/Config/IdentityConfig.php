@@ -7,7 +7,9 @@ class IdentityConfig
 {
 	public function __construct(
 		public ?int $id = null,
-		public ?array $roles = null
+		public ?array $roles = null,
+		public ?string $username = null,
+		public ?string $domain = null
 	) {}
 
 
@@ -16,6 +18,8 @@ class IdentityConfig
 		return new self(
 			$config['id'] ?? null,
 			isset($config['roles']) ? (array) $config['roles'] : null,
+			$config['username'] ?? null,
+			$config['domain'] ?? null,
 		);
 	}
 }
