@@ -47,6 +47,12 @@ class RequestConfigList
 			if (array_key_exists('roles', $config['identity'])) {
 				$newConfig['identity']['roles'] = $config['identity']['roles'];
 			}
+			if (array_key_exists('username', $config['identity'])) {
+				$newConfig['identity']['username'] = $config['identity']['username'];
+			}
+			if (array_key_exists('domain', $config['identity'])) {
+				$newConfig['identity']['domain'] = $config['identity']['domain'];
+			}
 		}
 		if (array_key_exists('form', $config)) {
 			if (array_key_exists('name', $config['form'])) {
@@ -75,4 +81,3 @@ class RequestConfigList
 		}
 	}
 }
-
