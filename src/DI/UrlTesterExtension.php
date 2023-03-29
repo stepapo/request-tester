@@ -8,6 +8,7 @@ use Stepapo\UrlTester\Mock\Session;
 use Nette\DI\CompilerExtension;
 use Nette\DI\Definitions\Statement;
 use Nette\Http\UrlScript;
+use Stepapo\UrlTester\Mock\User;
 use Stepapo\UrlTester\UrlTester;
 
 
@@ -31,6 +32,11 @@ class UrlTesterExtension extends CompilerExtension
 		if ($builder->hasDefinition('session.session')) {
 			$builder->getDefinition('session.session')
 				->setFactory(Session::class);
+		}
+
+		if ($builder->hasDefinition('security.user')) {
+			$builder->getDefinition('security.user')
+				->setFactory(User::class);
 		}
 
 		$builder->addDefinition($this->prefix('helper'))
