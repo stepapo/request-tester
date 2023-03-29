@@ -1,0 +1,22 @@
+<?php declare(strict_types=1);
+
+namespace Stepapo\UrlTester\Mock;
+
+use App\AppsModule\Model\Orm;
+use App\AppsModule\Model\Person\Person;
+use Nette\Security\Authenticator;
+use Nette\Security\Authorizator;
+use Nette\Security\IAuthenticator;
+use Nette\Security\IUserStorage;
+
+
+class User extends \Nette\Security\User
+{
+	public function __construct(
+		IUserStorage $legacyStorage,
+		Authenticator $authenticator = null,
+		Authorizator $authorizator = null,
+	) {
+		parent::__construct($legacyStorage, $authenticator, $authorizator);
+	}
+}
