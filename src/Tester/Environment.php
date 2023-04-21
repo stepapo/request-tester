@@ -68,8 +68,8 @@ class Environment extends \Tester\Environment
 				} elseif (self::$checkAssertions && !Assert::$counter) {
 					self::removeOutputBuffers();
 					echo "\n", Dumper::color('white/red', 'Error: This test forgets to execute an assertion.'), "\n";
-					self::exit(Job::CODE_FAIL);
-				} elseif (!getenv(parent::RUNNER) && self::$exitCode !== Job::CODE_SKIP) {
+					self::exit(Job::CodeFail);
+				} elseif (!getenv(parent::RUNNER) && self::$exitCode !== Job::CodeSkip) {
 					echo "\n", (self::$exitCode ? Dumper::color('white/red', 'FAILURE') : Dumper::color('white/green', 'OK')), "\n";
 				}
 			});
@@ -82,7 +82,7 @@ class Environment extends \Tester\Environment
 		self::removeOutputBuffers();
 		self::$checkAssertions = false;
 		echo Dumper::dumpException($e);
-		self::exit($e instanceof AssertException ? Job::CODE_FAIL : Job::CODE_ERROR);
+		self::exit($e instanceof AssertException ? Job::CodeFail : Job::CodeError);
 	}
 
 
