@@ -18,6 +18,8 @@ class TestPresenterResult
 {
 	private ?string $textResponseSource = null;
 
+	private bool $responseInspected = false;
+
 
 	public function __construct(
 		private Router $router,
