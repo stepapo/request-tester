@@ -7,13 +7,13 @@ use App\AppsModule\Model\Person\Person;
 use Nette\Security\Authenticator;
 use Nette\Security\Authorizator;
 use Nette\Security\IAuthenticator;
-use Nette\Security\IUserStorage;
+use Nette\Security\UserStorage;
 
 
 class User extends \Nette\Security\User
 {
 	public function __construct(
-		IUserStorage $legacyStorage,
+		UserStorage $legacyStorage,
 		Authenticator $authenticator = null,
 		Authorizator $authorizator = null,
 	) {
