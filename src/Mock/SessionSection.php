@@ -29,7 +29,7 @@ class SessionSection extends Nette\Http\SessionSection
 	}
 
 
-	public function &__get(string $name)
+	public function &__get(string $name): mixed
 	{
 		if ($this->warnOnUndefined && !array_key_exists($name, $this->data)) {
 			trigger_error("The variable '$name' does not exist in session section", E_USER_NOTICE);
@@ -51,18 +51,18 @@ class SessionSection extends Nette\Http\SessionSection
 	}
 
 
-	public function setExpiration($time, $variables = null)
+	public function setExpiration(?string $time, string|array|null $variables = null): static
 	{
 		return $this;
 	}
 
 
-	public function removeExpiration($variables = null): void
+	public function removeExpiration(string|array|null $variables = null): void
 	{
 	}
 
 
-	public function remove($name = null): void
+	public function remove(string|array|null $name = null): void
 	{
 		$this->data = [];
 	}
