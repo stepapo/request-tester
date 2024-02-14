@@ -17,11 +17,6 @@ class Session extends Nette\Http\Session
 	private string $id;
 
 
-	public function __construct()
-	{
-	}
-
-
 	public function start(): void
 	{
 		$this->started = true;
@@ -105,7 +100,7 @@ class Session extends Nette\Http\Session
 	}
 
 
-	public function setName(string $name)
+	public function setName(string $name): static
 	{
 		return $this;
 	}
@@ -117,7 +112,7 @@ class Session extends Nette\Http\Session
 	}
 
 
-	public function setOptions(array $options)
+	public function setOptions(array $options): static
 	{
 		return $this;
 	}
@@ -129,13 +124,13 @@ class Session extends Nette\Http\Session
 	}
 
 
-	public function setExpiration(?string $time)
+	public function setExpiration(?string $time): static
 	{
 		return $this;
 	}
 
 
-	public function setCookieParameters(string $path, string $domain = null, bool $secure = null, string $samesite = null)
+	public function setCookieParameters(string $path, string $domain = null, bool $secure = null, string $samesite = null): static
 	{
 		return $this;
 	}
@@ -147,13 +142,14 @@ class Session extends Nette\Http\Session
 	}
 
 
-	public function setSavePath(string $path)
+	public function setSavePath(string $path): static
 	{
 		return $this;
 	}
 
 
-	public function setHandler(\SessionHandlerInterface $handler)
+	public function setHandler(\SessionHandlerInterface $handler): static
 	{
+		return $this;
 	}
 }
