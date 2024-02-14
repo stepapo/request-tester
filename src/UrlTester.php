@@ -14,6 +14,7 @@ use Nette\Http\Request;
 use Nette\Http\Session;
 use Nette\Http\UrlScript;
 use Nette\Security\User;
+use Nette\Utils\Arrays;
 use Stepapo\UrlTester\PresenterTester\TestPresenterRequest;
 use Stepapo\UrlTester\PresenterTester\TestPresenterResult;
 use Tester\Assert;
@@ -35,7 +36,7 @@ class UrlTester
 	public function execute(TestPresenterRequest $testRequest, string $name): TestPresenterResult
 	{
 		$applicationRequest = $this->createApplicationRequest($testRequest);
-		$this->application->onRequest($this->application, $applicationRequest);
+		Arrays::invoke($this->application->onRequest, $this->application, $applicationRequest);
 		$presenter = $this->createPresenter($testRequest);
 
 		try {
