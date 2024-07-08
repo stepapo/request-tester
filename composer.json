@@ -1,9 +1,9 @@
 {
-	"name": "stepapo/url-tester",
+	"name": "stepapo/request-tester",
 	"type": "library",
 	"description": "Tester for Nette web applications.",
-	"keywords": ["nette", "tester", "web", "url"],
-	"homepage": "https://github.com/stepapo/url-tester",
+	"keywords": ["nette", "tester", "web", "request"],
+	"homepage": "https://github.com/stepapo/request-tester",
 	"license": "MIT",
 	"authors": [
 		{
@@ -11,18 +11,18 @@
 		}
 	],
 	"support": {
-		"issues": "https://github.com/stepapo/url-tester/issues"
+		"issues": "https://github.com/stepapo/request-tester/issues"
 	},
 	"require": {
 		"php": ">=8.1",
 		"nette/application": "^3.2",
 		"nette/http": "^3.2",
-		"nette/routing": "^3.0",
+		"nette/routing": "^3.1",
 		"nette/tester": "^2.5"
 	},
 	"autoload": {
 		"psr-4": {
-			"Stepapo\\UrlTester\\": "src/"
+			"Stepapo\\RequestTester\\": "src/"
 		}
 	}
 }

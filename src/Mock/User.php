@@ -1,12 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace Stepapo\UrlTester\Mock;
+namespace Stepapo\RequestTester\Mock;
 
 use App\AppsModule\Model\Orm;
 use App\AppsModule\Model\Person\Person;
 use Nette\Security\Authenticator;
 use Nette\Security\Authorizator;
-use Nette\Security\IAuthenticator;
 use Nette\Security\UserStorage;
 
 

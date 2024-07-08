@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Stepapo\UrlTester\Config;
+namespace Stepapo\RequestTester\Config;
 
 
 class RequestConfigList
@@ -34,8 +34,8 @@ class RequestConfigList
 		$newConfig = $defaultConfig ?: $config;
 		$newConfig['name'] = ($defaultConfig && $defaultConfig['name'] ? $defaultConfig['name'] . ' ' : '') . $name;
 
-		if (array_key_exists('url', $config)) {
-			$newConfig['url'] = $config['url'];
+		if (array_key_exists('path', $config)) {
+			$newConfig['path'] = $config['path'];
 		}
 		if (array_key_exists('post', $config)) {
 			$newConfig['post'] = $config['post'];

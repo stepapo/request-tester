@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Stepapo\UrlTester\Tester;
+namespace Stepapo\RequestTester\Tester;
 
 use Tester\Assert;
 use Tester\AssertException;

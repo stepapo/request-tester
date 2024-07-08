@@ -1,19 +1,19 @@
 <?php declare(strict_types=1);
 
-namespace Stepapo\UrlTester\Tester;
+namespace Stepapo\RequestTester\Tester;
 
 use Nette\Security\SimpleIdentity;
-use Stepapo\UrlTester\Config\RequestConfig;
-use Stepapo\UrlTester\Helper;
-use Stepapo\UrlTester\Config\TestConfig;
-use Stepapo\UrlTester\UrlTester;
+use Stepapo\RequestTester\Config\RequestConfig;
+use Stepapo\RequestTester\Config\TestConfig;
+use Stepapo\RequestTester\Helper;
+use Stepapo\RequestTester\RequestTester;
 
 
 abstract class TestCase extends \Tester\TestCase
 {
 	public function __construct(
 		private array $config,
-		private UrlTester $urlTester,
+		private RequestTester $requestTester,
 		private Helper $helper,
 		private $identityCallback = null,
 		private $refreshCallback = null
@@ -43,7 +43,7 @@ abstract class TestCase extends \Tester\TestCase
 			($this->refreshCallback)();
 		}
 
-		$url = '/' . trim($config->url, '/');
+		$url = '/' . trim($config->path, '/');
 		$request = $this->helper->createRequestFromUrl($url);
 
 		//Identity
@@ -75,7 +75,7 @@ abstract class TestCase extends \Tester\TestCase
 			$request = $request->withPost($this->helper->prepareValues((array)$config->post, true));
 		}
 
-		$result = $this->urlTester->execute($request, $config->name);
+		$result = $this->requestTester->execute($request, $config->name);
 
 		// Asserts
 		if ($config->assertConfig) {

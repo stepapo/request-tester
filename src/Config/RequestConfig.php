@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace Stepapo\UrlTester\Config;
+namespace Stepapo\RequestTester\Config;
 
 
 class RequestConfig
 {
 	public function __construct(
 		public string $name,
-		public string $url,
+		public string $path,
 		public ?array $post = null,
 		public ?IdentityConfig $identityConfig = null,
 		public ?FormConfig $formConfig = null,
@@ -19,7 +19,7 @@ class RequestConfig
 
 	public static function createFromArray(array $config)
 	{
-		$request = new self($config['name'], $config['url']);
+		$request = new self($config['name'], $config['path']);
 		if (array_key_exists('post', $config)) {
 			$request->post = $config['post'];
 		}

@@ -1,23 +1,23 @@
 <?php declare(strict_types=1);
 
-namespace Stepapo\UrlTester;
+namespace Stepapo\RequestTester;
 
 use Nette\Application\Responses\RedirectResponse;
 use Nette\Application\UI\Presenter;
-use Nette\Http\Request as HttpRequest;
+use Nette\Http\Request;
 use Nette\Http\UrlScript;
 use Nette\Routing\Router;
 use Nette\Security\IIdentity;
 use Nette\Utils\DateTime;
-use Stepapo\UrlTester\PresenterTester\TestPresenterRequest;
-use Stepapo\UrlTester\PresenterTester\TestPresenterResult;
+use Stepapo\RequestTester\PresenterTester\TestPresenterRequest;
+use Stepapo\RequestTester\PresenterTester\TestPresenterResult;
 use Tester\Expect;
 
 
 class Helper
 {
 	public function __construct(
-		private UrlTester $urlTester,
+		private RequestTester $requestTester,
 		private Router $router,
 	) {}
 
@@ -30,7 +30,7 @@ class Helper
 			if ($identity) {
 				$request = $request->withIdentity($identity);
 			}
-			$result = $this->urlTester->execute($request, $result->name);
+			$result = $this->requestTester->execute($request, $result->name);
 			return $this->getFinalResult($result, $identity);
 		}
 
@@ -46,14 +46,14 @@ class Helper
 
 	public function createRequestFromUrl(string $url): TestPresenterRequest
 	{
-		$httpRequest = new HttpRequest(new UrlScript($url, '/'));
+		$httpRequest = new Request(new UrlScript($url, '/'));
 
 		$params = $this->router->match($httpRequest);
 
-		$presenter = $params[Presenter::PRESENTER_KEY] ?? null;
-		unset($params[Presenter::PRESENTER_KEY]);
+		$presenter = $params[Presenter::PresenterKey] ?? null;
+		unset($params[Presenter::PresenterKey]);
 
-		$request = $this->urlTester->createRequest($presenter)
+		$request = $this->requestTester->createRequest($presenter)
 			->withParameters($params);
 
 		return $request;

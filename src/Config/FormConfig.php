@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Stepapo\UrlTester\Config;
+namespace Stepapo\RequestTester\Config;
 
 
 class FormConfig

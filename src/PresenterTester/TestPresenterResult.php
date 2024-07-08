@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Stepapo\UrlTester\PresenterTester;
+namespace Stepapo\RequestTester\PresenterTester;
 
 use Nette\Application\BadRequestException;
 use Nette\Application\IPresenter;

@@ -1,6 +1,6 @@
-# URL Tester
+# Request Tester
 
-URL Tester is an extension for Nette Framework used for testing web applications. It validates rendered content based on what URL is requested, which user is logged in or what data was submitted through a form. The docs show basic example and explain ways of configurating tests.
+Request Tester is an extension for Nette Framework used for testing web applications. It validates rendered content based on what path is requested, which user is logged in or what data was submitted through a form. The docs show basic example and explain ways of configurating tests.
 
 ## Example
 
@@ -12,7 +12,7 @@ Use `tests/config/authorization.neon` to define a test:
 
 ```neon
 name: authorization
-url: auth
+path: auth
 requests:
     with wrong name:
         form:
@@ -31,7 +31,7 @@ requests:
         asserts:
             renders: The password is wrong
     with wrong address:
-        url: auht
+        path: auht
         asserts:
             httpCode: 404
     with correct input:
@@ -73,7 +73,7 @@ $container = App\Bootstrap::bootForTests()->createContainer();
  * @testCase
  * @dataProvider config.php
  */
-class PresenterTest extends Stepapo\UrlTester\Tester\TestCase
+class PresenterTest extends Stepapo\RequestTester\Tester\TestCase
 {
 }
 
@@ -87,7 +87,7 @@ Specific URL Tester printer can be used for outputing results instead of basic N
 ```php
 require __DIR__ . '/../vendor/autoload.php';
 
-$runner->outputHandlers[] = new Stepapo\UrlTester\Tester\UrlPrinter(
+$runner->outputHandlers[] = new Stepapo\RequestTester\Tester\UrlPrinter(
     $runner,
     require __DIR__ . '/config.php',
 );
@@ -122,10 +122,10 @@ requests:
 
 ### Request
 
-Request configuration requires `url` and `asserts`. Use `identity` to specify which user should be logged. Use `form` if you want to submit a form. `requests` can be used to specify subrequests that inherit parent request configuration and override some of it with their own if needed.
+Request configuration requires `path` and `asserts`. Use `identity` to specify which user should be logged. Use `form` if you want to submit a form. `requests` can be used to specify subrequests that inherit parent request configuration and override some of it with their own if needed.
 
 ```neon
-url: auth
+path: auth
 identity: # include Identity configuration
 form: # include Form configuration
 asserts: # include Assert configuration
