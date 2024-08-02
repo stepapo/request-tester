@@ -2,24 +2,14 @@
 
 namespace Stepapo\RequestTester\Config;
 
+use Stepapo\Utils\Attribute\ToArray;
+use Stepapo\Utils\Schematic;
 
-class IdentityConfig
+
+class IdentityConfig extends Schematic
 {
-	public function __construct(
-		public ?int $id = null,
-		public ?array $roles = null,
-		public ?string $username = null,
-		public ?string $domain = null
-	) {}
-
-
-	public static function createFromArray(?array $config = null)
-	{
-		return new self(
-			$config['id'] ?? null,
-			isset($config['roles']) ? (array) $config['roles'] : null,
-			$config['username'] ?? null,
-			$config['domain'] ?? null,
-		);
-	}
+	public ?int $id = null;
+	#[ToArray] public ?array $roles = null;
+	public ?string $username = null;
+	public ?string $domain = null;
 }

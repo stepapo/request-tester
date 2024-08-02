@@ -43,29 +43,29 @@ abstract class TestCase extends \Tester\TestCase
 			($this->refreshCallback)();
 		}
 
-		$url = '/' . trim($config->path, '/');
+		$url = rtrim($config->path, '/');
 		$request = $this->helper->createRequestFromUrl($url);
 
 		//Identity
 		$identity = null;
-		if ($config->identityConfig) {
+		if ($config->identity) {
 			$identity = $this->identityCallback
 				? ($this->identityCallback)($config)
-				: new SimpleIdentity($config->identityConfig->id, (array)$config->identityConfig->roles);
+				: new SimpleIdentity($config->identity->id, (array)$config->identity->roles);
 			$request = $request->withIdentity($identity);
 		}
 
 		// Form
-		if ($config->formConfig && $config->formConfig->name != 'none') {
-			if ($config->formConfig->name) {
+		if ($config->form && $config->form->name != 'none') {
+			if ($config->form->name) {
 				$send = true;
-				if (isset($config->formConfig->post['send']) && $config->formConfig->post['send'] === 'false') {
+				if (isset($config->form->post['send']) && $config->form->post['send'] === 'false') {
 					$send = false;
-					unset($config->formConfig->post['send']);
+					unset($config->form->post['send']);
 				}
 				$request = $request->withForm(
-					$config->formConfig->name,
-					$this->helper->prepareValues((array)$config->formConfig->post + ($send ? ['send' => '1'] : []), true)
+					$config->form->name,
+					$this->helper->prepareValues((array)$config->form->post + ($send ? ['send' => '1'] : []), true)
 				);
 			}
 		}
@@ -78,24 +78,24 @@ abstract class TestCase extends \Tester\TestCase
 		$result = $this->requestTester->execute($request, $config->name);
 
 		// Asserts
-		if ($config->assertConfig) {
-			if ($config->assertConfig?->httpCode && $config->assertConfig->httpCode >= 400) {
-				$result->assertBadRequest($config->assertConfig->httpCode);
+		if ($config->asserts) {
+			if ($config->asserts?->httpCode && $config->asserts->httpCode >= 400) {
+				$result->assertBadRequest($config->asserts->httpCode);
 				return;
 			}
 			$result = $this->helper->getFinalResult($result, $identity);
-			if ($config->assertConfig->renders) {
-				foreach ($config->assertConfig->renders as $renders) {
+			if ($config->asserts->renders) {
+				foreach ($config->asserts->renders as $renders) {
 					$result->assertRenders((array)$renders);
 				}
 			}
-			if ($config->assertConfig->notRenders) {
-				foreach ($config->assertConfig->notRenders as $notRenders) {
+			if ($config->asserts->notRenders) {
+				foreach ($config->asserts->notRenders as $notRenders) {
 					$result->assertNotRenders((array)$notRenders);
 				}
 			}
-			if ($config->assertConfig->json) {
-				$result->assertJson($this->helper->prepareValues($config->assertConfig->json));
+			if ($config->asserts->json) {
+				$result->assertJson($this->helper->prepareValues($config->asserts->json));
 			}
 		}
 	}

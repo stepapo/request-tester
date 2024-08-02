@@ -2,43 +2,20 @@
 
 namespace Stepapo\RequestTester\Config;
 
+use Stepapo\Utils\Attribute\KeyProperty;
+use Stepapo\Utils\Attribute\Type;
+use Stepapo\Utils\Schematic;
 
-class RequestConfig
+
+class RequestConfig extends Schematic
 {
-	public function __construct(
-		public string $name,
-		public string $path,
-		public ?array $post = null,
-		public ?IdentityConfig $identityConfig = null,
-		public ?FormConfig $formConfig = null,
-		public ?AssertConfig $assertConfig = null,
-		public bool $refresh = false,
-		public bool $reset = false,
-	) {}
-
-
-	public static function createFromArray(array $config)
-	{
-		$request = new self($config['name'], $config['path']);
-		if (array_key_exists('post', $config)) {
-			$request->post = $config['post'];
-		}
-		if (array_key_exists('identity', $config)) {
-			$request->identityConfig = IdentityConfig::createFromArray($config['identity']);
-		}
-		if (array_key_exists('form', $config)) {
-			$request->formConfig = FormConfig::createFromArray($config['form']);
-		}
-		if (array_key_exists('asserts', $config)) {
-			$request->assertConfig = AssertConfig::createFromArray($config['asserts']);
-		}
-		if (array_key_exists('refresh', $config)) {
-			$request->refresh = $config['refresh'];
-		}
-		if (array_key_exists('reset', $config)) {
-			$request->reset = $config['reset'];
-		}
-		return $request;
-	}
+	#[KeyProperty] public string $name;
+	public string $path;
+	public ?array $post = null;
+	public bool $reset = false;
+	public bool $refresh = false;
+	#[Type(IdentityConfig::class)] public IdentityConfig|array|null $identity = null;
+	#[Type(FormConfig::class)] public FormConfig|array|null $form = null;
+	#[Type(AssertConfig::class)] public AssertConfig|array|null $asserts = null;
 }
 

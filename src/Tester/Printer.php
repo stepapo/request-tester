@@ -8,7 +8,7 @@ use Tester\Runner\Runner;
 use Tester\Runner\Test;
 
 
-class UrlPrinter implements OutputHandler
+class Printer implements OutputHandler
 {
 	private $file;
 

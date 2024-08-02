@@ -87,7 +87,7 @@ Specific URL Tester printer can be used for outputing results instead of basic N
 ```php
 require __DIR__ . '/../vendor/autoload.php';
 
-$runner->outputHandlers[] = new Stepapo\RequestTester\Tester\UrlPrinter(
+$runner->outputHandlers[] = new Stepapo\RequestTester\Tester\Printer(
     $runner,
     require __DIR__ . '/config.php',
 );

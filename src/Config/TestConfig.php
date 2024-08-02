@@ -2,30 +2,22 @@
 
 namespace Stepapo\RequestTester\Config;
 
-use Nette\Neon\Neon;
-use Nette\Utils\FileSystem;
+use Nette\Schema\Processor;
+use Stepapo\Utils\Attribute\ArrayOfType;
+use Stepapo\Utils\Schematic;
 
 
-class TestConfig
+class TestConfig extends Schematic
 {
-	/** @param RequestConfig[] $requests */
-	public function __construct(
-		public string $name,
-		public array $requests
-	) {}
+	public string $name;
+	/** @var RequestConfig[] */ #[ArrayOfType(RequestConfig::class)] public array $requests;
 
 
-	public static function createFromNeon(string $file): TestConfig
+	public static function createFromArray(mixed $config = [], mixed $key = null, bool $skipDefaults = false): static
 	{
-		return self::createFromArray((array) Neon::decode(FileSystem::read($file)));
-	}
-
-
-	public static function createFromArray(array $config): TestConfig
-	{
-		return new self(
-			$config['name'],
-			RequestConfigList::createFromArray($config)
-		);
+		$data = new self;
+		$data->name = $config['name'];
+		$data->requests = RequestConfigList::createFromArray($config);
+		return $data;
 	}
 }

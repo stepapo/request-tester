@@ -2,24 +2,14 @@
 
 namespace Stepapo\RequestTester\Config;
 
+use Stepapo\Utils\Attribute\ToArray;
+use Stepapo\Utils\Schematic;
 
-class AssertConfig
+
+class AssertConfig extends Schematic
 {
-	public function __construct(
-		public ?int $httpCode = null,
-		public ?array $renders = null,
-		public ?array $notRenders = null,
-		public ?array $json = null,
-	) {}
-
-
-	public static function createFromArray(array $config)
-	{
-		return new self(
-			$config['httpCode'] ?? null,
-			isset($config['renders']) ? (array) $config['renders'] : null,
-			isset($config['notRenders']) ? (array) $config['notRenders'] : null,
-			$config['json'] ?? null
-		);
-	}
+	public ?int $httpCode = null;
+	#[ToArray] public ?array $renders = null;
+	#[ToArray] public ?array $notRenders = null;
+	public ?array $json = null;
 }

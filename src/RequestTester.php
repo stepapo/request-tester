@@ -38,10 +38,9 @@ class RequestTester
 		$applicationRequest = $this->createApplicationRequest($testRequest);
 		Arrays::invoke($this->application->onRequest, $this->application, $applicationRequest);
 		$presenter = $this->createPresenter($testRequest);
-
 		try {
 			$response = $presenter->run($applicationRequest);
-			$badRequestException = null;
+			$badRequestException = $applicationRequest->getParameter('exception');
 		} catch (BadRequestException $badRequestException) {
 			$response = null;
 		}
@@ -63,9 +62,9 @@ class RequestTester
 	}
 
 
-	public function createRequest(string $presenterName): TestPresenterRequest
+	public function createRequest(string $url, string $presenterName): TestPresenterRequest
 	{
-		return new TestPresenterRequest($presenterName, $this->session);
+		return new TestPresenterRequest($url, $presenterName, $this->session);
 	}
 
 
@@ -107,11 +106,7 @@ class RequestTester
 	protected function setupHttpRequest(TestPresenterRequest $request): void
 	{
 		$appRequest = $this->createApplicationRequest($request);
-		$refUrl = new UrlScript($this->baseUrl, '/');
-
-		$url = new UrlScript($this->router->constructUrl($appRequest->toArray(), $refUrl), '/');
-
-		\Closure::bind(function () use ($request, $url) {
+		\Closure::bind(function () use ($request) {
 			/** @var Request $this */
 			$this->headers = $request->getHeaders() + $this->headers;
 			if ($request->isAjax()) {
@@ -120,7 +115,7 @@ class RequestTester
 				unset($this->headers['x-requested-with']);
 			}
 			$this->post = $request->getPost();
-			$this->url = $url;
+			$this->url = new UrlScript($request->getUrl());
 			$this->method = ($request->getPost() || $request->getRawBody()) ? 'POST' : 'GET';
 			$this->rawBodyCallback = [$request, 'getRawBody'];
 		}, $this->httpRequest, Request::class)->__invoke();

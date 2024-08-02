@@ -27,6 +27,7 @@ class TestPresenterRequest
 
 
 	public function __construct(
+		private string $url,
 		private string $presenterName,
 		private Session $session
 	) {
@@ -44,6 +45,12 @@ class TestPresenterRequest
 	public function getHeaders(): array
 	{
 		return $this->headers;
+	}
+
+
+	public function getUrl(): string
+	{
+		return $this->url;
 	}
 
 
@@ -140,10 +147,10 @@ class TestPresenterRequest
 	}
 
 
-	public function withParameters(array $parameters): TestPresenterRequest
+	public function withParameters(?array $parameters): TestPresenterRequest
 	{
 		$request = clone $this;
-		$request->parameters = $parameters + $this->parameters;
+		$request->parameters = (array) $parameters + $this->parameters;
 
 		return $request;
 	}

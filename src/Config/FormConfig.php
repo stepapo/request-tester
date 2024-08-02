@@ -2,20 +2,11 @@
 
 namespace Stepapo\RequestTester\Config;
 
+use Stepapo\Utils\Schematic;
 
-class FormConfig
+
+class FormConfig extends Schematic
 {
-	public function __construct(
-		public string $name,
-		public ?array $post = null
-	) {}
-
-
-	public static function createFromArray(?array $config = null)
-	{
-		return new self(
-			$config['name'],
-			$config['post'] ?? null,
-		);
-	}
+	public string $name;
+	public ?array $post = null;
 }

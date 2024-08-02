@@ -2,6 +2,7 @@
 
 namespace Stepapo\RequestTester;
 
+use Nette\Application\BadRequestException;
 use Nette\Application\Responses\RedirectResponse;
 use Nette\Application\UI\Presenter;
 use Nette\Http\Request;
@@ -12,6 +13,7 @@ use Nette\Utils\DateTime;
 use Stepapo\RequestTester\PresenterTester\TestPresenterRequest;
 use Stepapo\RequestTester\PresenterTester\TestPresenterResult;
 use Tester\Expect;
+use Tracy\Dumper;
 
 
 class Helper
@@ -46,14 +48,19 @@ class Helper
 
 	public function createRequestFromUrl(string $url): TestPresenterRequest
 	{
-		$httpRequest = new Request(new UrlScript($url, '/'));
+		$httpRequest = new Request(new UrlScript(ltrim($url, ':')));
 
 		$params = $this->router->match($httpRequest);
 
-		$presenter = $params[Presenter::PresenterKey] ?? null;
+		$presenter = $params[Presenter::PresenterKey] ?? 'Error';
+		$params = isset($params[Presenter::PresenterKey]) ? $params : ['exception' => new BadRequestException()];
 		unset($params[Presenter::PresenterKey]);
 
-		$request = $this->requestTester->createRequest($presenter)
+//		Dumper::dump($url);
+//		Dumper::dump($presenter);
+//		Dumper::dump($params);
+
+		$request = $this->requestTester->createRequest($url, $presenter)
 			->withParameters($params);
 
 		return $request;
