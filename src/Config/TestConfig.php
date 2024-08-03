@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Stepapo\RequestTester\Config;
 
@@ -10,7 +12,7 @@ use Stepapo\Utils\Schematic;
 class TestConfig extends Schematic
 {
 	public string $name;
-	/** @var RequestConfig[] */ #[ArrayOfType(RequestConfig::class)] public array $requests;
+	/** @var RequestConfig[] */ #[ArrayOfType(RequestConfig::class)] public RequestConfigList|array $requests;
 
 
 	public static function createFromArray(mixed $config = [], mixed $key = null, bool $skipDefaults = false): static

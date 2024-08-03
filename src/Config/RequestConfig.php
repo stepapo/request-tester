@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Stepapo\RequestTester\Config;
 
@@ -10,6 +12,7 @@ use Stepapo\Utils\Schematic;
 class RequestConfig extends Schematic
 {
 	#[KeyProperty] public string $name;
+	public string $method = 'GET';
 	public string $path;
 	public ?array $post = null;
 	public bool $reset = false;

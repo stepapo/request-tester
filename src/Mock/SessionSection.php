@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Stepapo\RequestTester\Mock;
+namespace Stepapo\UrlTester\Mock;
 
 use Nette;
 

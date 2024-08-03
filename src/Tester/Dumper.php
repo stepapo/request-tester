@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Stepapo\RequestTester\Tester;
 
@@ -62,7 +64,7 @@ class Dumper extends \Tester\Dumper
 				'%2' => self::color('yellow') . self::toLine($expected) . self::color('white'),
 			]);
 		} else {
-			$message = "\n             " . ($e instanceof \ErrorException ? Helpers::errorTypeToString($e->getSeverity()) : get_class($e))
+			$message = "\n              " . ($e instanceof \ErrorException ? Helpers::errorTypeToString($e->getSeverity()) : get_class($e))
 				. ': ' . preg_replace('#[\x00-\x09\x0B-\x1F]+#', ' ', $e->getMessage()) . "\n";
 
 			foreach ($trace as $item) {
@@ -73,7 +75,7 @@ class Dumper extends \Tester\Dumper
 				$line = $item['class'] === Assert::class && method_exists($item['class'], $item['function'])
 				&& strpos($tmp = file($item['file'])[$item['line'] - 1], "::$item[function](") ? $tmp : null;
 
-				$message .= '             in '
+				$message .= '              in '
 					. ($item['file']
 						? (
 							($item['file'] === $testFile ? self::color('white') : '')

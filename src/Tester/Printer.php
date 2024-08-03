@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Stepapo\RequestTester\Tester;
 
@@ -29,11 +31,11 @@ class Printer implements OutputHandler
 
 	public function __construct(
 		private Runner $runner,
-		private array $dataProvider,
+		private array $configs,
 		private bool $displaySkipped = false,
 		string $file = 'php://output',
 		private bool $ciderMode = false,
-		private array $modules = []
+		private array $setups = []
 	) {
 		$this->file = fopen($file, 'w');
 		$this->symbols = [
@@ -55,8 +57,8 @@ class Printer implements OutputHandler
 		];
 		$this->time = -microtime(true);
 		$m = '';
-		foreach ($this->modules as $name => $config) {
-			$m .= Dumper::color($config['color'], $config['icon']) . ' ' . $name . ' ';
+		foreach ($this->setups as $name => $setup) {
+			$m .= Dumper::color($setup['color'], $setup['icon']) . ' ' . $name . ' ';
 		}
 		fwrite($this->file, $this->runner->getInterpreter()->getShortInfo()
 			. ' | ' . $this->runner->getInterpreter()->getCommandLine()
@@ -93,42 +95,42 @@ class Printer implements OutputHandler
 	{
 		$this->results[$test->getResult()]++;
 
-		$dataProvider = substr(
+		$config = substr(
 			$test->getSignature(),
 			strpos($test->getSignature(), '=') + 1,
 			strpos($test->getSignature(), '|') - strpos($test->getSignature(), '=') - 1
 		);
 
 		$moduleName = substr(
-			$dataProvider,
+			$config,
 			0,
-			strpos($dataProvider, '-') - 1,
+			strpos($config, '-') - 1,
 		);
 
-		$requestCount = $this->countRequests($this->dataProvider[$dataProvider]);
+		$requestCount = $this->countRequests($this->configs[$config]);
 		$this->totalRequestCount += $requestCount;
 
-		if (isset($this->modules[$moduleName])) {
-			$dataProviderWithIcon = str_replace(
+		if (isset($this->setups[$moduleName])) {
+			$configWithIcon = str_replace(
 				$moduleName . ' -',
-				Dumper::color($this->modules[$moduleName]['color'], $this->modules[$moduleName]['icon']),
-				$dataProvider
+				Dumper::color($this->setups[$moduleName]['color'], $this->setups[$moduleName]['icon']),
+				$config
 			);
 		}
 
 		$write = $this->symbols[$test->getResult()]
 			. ' '
-			. Dumper::color('yellow', sprintf('%0.2f', round((float) $test->getDuration(), 2)) . 's')
+			. Dumper::color('aqua', sprintf('%0.3f', round((float) $test->getDuration(), 3)) . 's')
 			. ' '
-			. Dumper::color('olive', sprintf('%2u', $requestCount) . '×')
+			. Dumper::color('teal', sprintf('%2u', $requestCount) . '×')
 			. ' '
-			. ($dataProviderWithIcon ?? $dataProvider)
+			. ($configWithIcon ?? $config)
 			. "\n";
 
 		$message = str_replace("\n", "\n   ", trim((string) $test->message)) . "\n";
-		if ($test->getResult() === Test::FAILED) {
-			$write .= Dumper::color('red', "                ") . "$message";
-		} elseif ($test->getResult() === Test::SKIPPED && $this->displaySkipped) {
+		if ($test->getResult() === Test::Failed) {
+			$write .= Dumper::color('red', "                 ") . "$message";
+		} elseif ($test->getResult() === Test::Skipped && $this->displaySkipped) {
 			$write .= "   Skipped: $message";
 		}
 
@@ -143,10 +145,10 @@ class Printer implements OutputHandler
 		fwrite($this->file, !$this->count ? "No tests found\n" :
 			"\n"
 			. ($this->buffer ? "\n" . $this->buffer . "\n" : "")
-			. ($this->results[Test::FAILED] ? Dumper::color('white/red') . 'FAILURES!' : Dumper::color('white/green') . 'OK')
+			. ($this->results[Test::Failed] ? Dumper::color('red') . 'FAILURES!' : Dumper::color('green') . 'OK')
 			. " ($this->count test" . ($this->count > 1 ? 's' : '') . ', '
-			. ($this->results[Test::FAILED] ? $this->results[Test::FAILED] . ' failure' . ($this->results[Test::FAILED] > 1 ? 's' : '') . ', ' : '')
-			. ($this->results[Test::SKIPPED] ? $this->results[Test::SKIPPED] . ' skipped, ' : '')
+			. ($this->results[Test::Failed] ? $this->results[Test::Failed] . ' failure' . ($this->results[Test::Failed] > 1 ? 's' : '') . ', ' : '')
+			. ($this->results[Test::Skipped] ? $this->results[Test::Skipped] . ' skipped, ' : '')
 			. "$this->totalRequestCount requests, "
 			. ($this->count !== $run ? ($this->count - $run) . ' not run, ' : '')
 			. sprintf('%0.1f', $this->time + microtime(true)) . ' seconds)' . Dumper::color() . "\n");
@@ -155,13 +157,13 @@ class Printer implements OutputHandler
 	}
 
 
-	private function countRequests($dataProvider)
+	private function countRequests($config)
 	{
 		$c = 0;
-		if (!isset($dataProvider['requests'])) {
+		if (!isset($config['requests'])) {
 			return 1;
 		}
-		foreach ($dataProvider['requests'] as $s) {
+		foreach ($config['requests'] as $s) {
 			$c += $this->countRequests($s);
 		}
 		return $c;

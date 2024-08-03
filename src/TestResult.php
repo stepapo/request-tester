@@ -1,33 +1,26 @@
-<?php declare(strict_types=1);
+<?php
 
-namespace Stepapo\RequestTester\PresenterTester;
+declare(strict_types=1);
+
+namespace Stepapo\RequestTester;
 
 use Nette\Application\BadRequestException;
-use Nette\Application\IPresenter;
-use Nette\Application\Request;
 use Nette\Application\Response;
 use Nette\Application\Responses\JsonResponse;
-use Nette\Application\Responses\RedirectResponse;
 use Nette\Application\Responses\TextResponse;
-use Nette\Routing\Router;
 use Tester\Assert;
 use Tester\Dumper;
 
 
-class TestPresenterResult
+class TestResult
 {
 	private ?string $textResponseSource = null;
 
-	private bool $responseInspected = false;
-
 
 	public function __construct(
-		private Router $router,
-		private Request $request,
-		private IPresenter $presenter,
 		private ?Response $response,
 		private ?BadRequestException $badRequestException,
-		public string $name
+		public string $name,
 	) {}
 
 
@@ -36,15 +29,6 @@ class TestPresenterResult
 		Assert::null($this->badRequestException, Dumper::color('red', $this->name));
 		assert($this->response !== null);
 		return $this->response;
-	}
-
-
-	public function getRedirectResponse(): RedirectResponse
-	{
-		$response = $this->getResponse();
-		Assert::type(RedirectResponse::class, $response, Dumper::color('red', $this->name));
-		assert($response instanceof RedirectResponse);
-		return $response;
 	}
 
 
@@ -79,7 +63,6 @@ class TestPresenterResult
 
 	public function assertRenders(string|array|null $match = null): self
 	{
-		$this->responseInspected = true;
 		if (is_array($match)) {
 			$m = implode(', ', $match);
 			$match = '%A?%' . implode('%A?%', $match) . '%A?%';
@@ -102,7 +85,6 @@ class TestPresenterResult
 			$matches = [$matches];
 		}
 		assert(is_array($matches));
-		$this->responseInspected = true;
 		$source = $this->getTextResponseSource();
 		foreach ($matches as $match) {
 			assert(is_string($match));
@@ -119,7 +101,6 @@ class TestPresenterResult
 
 	public function assertJson(?array $expected = null): self
 	{
-		$this->responseInspected = true;
 		$response = $this->getJsonResponse();
 		if (func_num_args() !== 0) {
 			Assert::equal($expected, $response->getPayload(), Dumper::color('red', $this->name));
@@ -128,20 +109,13 @@ class TestPresenterResult
 	}
 
 
-	public function assertBadRequest(int $code = null, string $messagePattern = null): self
+	public function assertBadRequest(int $code = null): self
 	{
-		$this->responseInspected = true;
 		Assert::type(BadRequestException::class, $this->badRequestException, Dumper::color('red', $this->name));
 		assert($this->badRequestException !== null);
-
 		if ($code !== null) {
 			Assert::same($code, $this->badRequestException->getHttpCode(), Dumper::color('red', $this->name));
 		}
-
-		if ($messagePattern !== null) {
-			Assert::match($messagePattern, $this->badRequestException->getMessage(), Dumper::color('red', $this->name));
-		}
-
 		return $this;
 	}
 }

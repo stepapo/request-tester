@@ -1,20 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Stepapo\RequestTester\Config;
 
+use ArrayObject;
 
-class RequestConfigList
+
+class RequestConfigList extends ArrayObject
 {
-	/** @var RequestConfig[] */
-	private array $requests;
-
-
-	/** @return RequestConfig[] */
-	public static function createFromArray(array $config): array
+	public static function createFromArray(array $config): self
 	{
 		$list = new self();
 		$list->addFromArray($config);
-		return $list->requests;
+		return $list;
 	}
 
 
@@ -77,7 +76,7 @@ class RequestConfigList
 			}
 		} else {
 			unset($newConfig['requests']);
-			$this->requests[] = RequestConfig::createFromArray($newConfig);
+			$this->append(RequestConfig::createFromArray($newConfig));
 		}
 	}
 }

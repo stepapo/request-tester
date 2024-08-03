@@ -1,11 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Stepapo\RequestTester\Tester;
 
 use Nette\Security\SimpleIdentity;
 use Stepapo\RequestTester\Config\RequestConfig;
 use Stepapo\RequestTester\Config\TestConfig;
-use Stepapo\RequestTester\Helper;
 use Stepapo\RequestTester\RequestTester;
 
 
@@ -14,7 +15,6 @@ abstract class TestCase extends \Tester\TestCase
 	public function __construct(
 		private array $config,
 		private RequestTester $requestTester,
-		private Helper $helper,
 		private $identityCallback = null,
 		private $refreshCallback = null
 	) {}
@@ -44,15 +44,18 @@ abstract class TestCase extends \Tester\TestCase
 		}
 
 		$url = rtrim($config->path, '/');
-		$request = $this->helper->createRequestFromUrl($url);
+		$request = $this->requestTester->createRequestFromUrl($url);
 
-		//Identity
+		// Method
+		$request->setMethod($config->method);
+
+		// Identity
 		$identity = null;
 		if ($config->identity) {
 			$identity = $this->identityCallback
 				? ($this->identityCallback)($config)
 				: new SimpleIdentity($config->identity->id, (array)$config->identity->roles);
-			$request = $request->withIdentity($identity);
+			$request->setIdentity($identity);
 		}
 
 		// Form
@@ -63,16 +66,16 @@ abstract class TestCase extends \Tester\TestCase
 					$send = false;
 					unset($config->form->post['send']);
 				}
-				$request = $request->withForm(
+				$request->setForm(
 					$config->form->name,
-					$this->helper->prepareValues((array)$config->form->post + ($send ? ['send' => '1'] : []), true)
+					$this->requestTester->prepareValues((array)$config->form->post + ($send ? ['send' => '1'] : []), true),
 				);
 			}
 		}
 
 		// Post
 		if ($config->post) {
-			$request = $request->withPost($this->helper->prepareValues((array)$config->post, true));
+			$request->setPost($this->requestTester->prepareValues((array)$config->post, true));
 		}
 
 		$result = $this->requestTester->execute($request, $config->name);
@@ -83,7 +86,7 @@ abstract class TestCase extends \Tester\TestCase
 				$result->assertBadRequest($config->asserts->httpCode);
 				return;
 			}
-			$result = $this->helper->getFinalResult($result, $identity);
+			$result = $this->requestTester->getFinalResult($result, $identity);
 			if ($config->asserts->renders) {
 				foreach ($config->asserts->renders as $renders) {
 					$result->assertRenders((array)$renders);
@@ -95,7 +98,7 @@ abstract class TestCase extends \Tester\TestCase
 				}
 			}
 			if ($config->asserts->json) {
-				$result->assertJson($this->helper->prepareValues($config->asserts->json));
+				$result->assertJson($this->requestTester->prepareValues($config->asserts->json));
 			}
 		}
 	}
