@@ -15,7 +15,7 @@ class RequestConfig extends Schematic
 	public string $method = 'GET';
 	public string $path;
 	public ?array $post = null;
-	public bool $reset = false;
+	public bool $reset = true;
 	public bool $refresh = false;
 	#[Type(IdentityConfig::class)] public IdentityConfig|array|null $identity = null;
 	#[Type(FormConfig::class)] public FormConfig|array|null $form = null;

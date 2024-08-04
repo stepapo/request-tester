@@ -82,7 +82,7 @@ abstract class TestCase extends \Tester\TestCase
 
 		// Asserts
 		if ($config->asserts) {
-			if ($config->asserts?->httpCode && $config->asserts->httpCode >= 400) {
+			if ($config->asserts->httpCode && $config->asserts->httpCode >= 400) {
 				$result->assertBadRequest($config->asserts->httpCode);
 				return;
 			}
@@ -97,7 +97,7 @@ abstract class TestCase extends \Tester\TestCase
 					$result->assertNotRenders((array)$notRenders);
 				}
 			}
-			if ($config->asserts->json) {
+			if ($config->asserts->json !== null) {
 				$result->assertJson($this->requestTester->prepareValues($config->asserts->json));
 			}
 		}
