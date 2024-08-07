@@ -7,13 +7,16 @@ namespace Stepapo\RequestTester;
 use Nette\Forms\Controls\CsrfProtection;
 use Nette\Http\Session;
 use Nette\Security\IIdentity;
+use Nette\Utils\Json;
 
 
 class TestRequest
 {
 	public string $methodName = 'GET';
+	public array $headers = [];
 	public array $parameters = [];
 	public array $post = [];
+	public ?string $rawBody = null;
 	public ?IIdentity $identity = null;
 
 
@@ -21,8 +24,7 @@ class TestRequest
 		public string $url,
 		public string $presenterName,
 		private Session $session,
-	)
-	{
+	) {
 //		$this->session->setFakeId('stepapo.id');
 		$this->session->getSection(CsrfProtection::class)->token = 'stepapo.token';
 	}
@@ -31,6 +33,20 @@ class TestRequest
 	public function setMethod(string $methodName): self
 	{
 		$this->methodName = $methodName;
+		return $this;
+	}
+
+
+	public function setHeaders(array $headers): self
+	{
+		$this->headers = array_change_key_case($headers);
+		return $this;
+	}
+
+
+	public function setRawBody(string|array $rawBody): self
+	{
+		$this->rawBody = is_array($rawBody) ? Json::encode($rawBody) : $rawBody;
 		return $this;
 	}
 

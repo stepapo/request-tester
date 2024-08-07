@@ -49,6 +49,16 @@ abstract class TestCase extends \Tester\TestCase
 		// Method
 		$request->setMethod($config->method);
 
+		// Headers
+		if ($config->headers) {
+			$request->setHeaders($config->headers);
+		}
+
+		// RawBody
+		if ($config->rawBody) {
+			$request->setRawBody($config->rawBody);
+		}
+
 		// Identity
 		$identity = null;
 		if ($config->identity) {

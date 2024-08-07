@@ -22,6 +22,7 @@ use Nette\Utils\Arrays;
 use Nette\Utils\DateTime;
 use Tester\Assert;
 use Tester\Expect;
+use Tracy\Dumper;
 
 
 class RequestTester
@@ -109,9 +110,11 @@ class RequestTester
 	{
 		\Closure::bind(function () use ($request) {
 			/** @var HttpRequest $this */
+			$this->method = ($request->post) ? 'POST' : $request->methodName;
+			$this->headers = $request->headers + $this->headers;
 			$this->post = $request->post;
 			$this->url = new UrlScript($request->url);
-			$this->method = ($request->post) ? 'POST' : $request->methodName;
+			$this->rawBodyCallback = fn() => $request->rawBody;
 		}, $this->httpRequest, HttpRequest::class)->__invoke();
 	}
 

@@ -36,8 +36,17 @@ class RequestConfigList extends ArrayObject
 		if (array_key_exists('path', $config)) {
 			$newConfig['path'] = $config['path'];
 		}
+		if (array_key_exists('headers', $config)) {
+			$newConfig['headers'] = $config['headers'];
+		}
 		if (array_key_exists('post', $config)) {
 			$newConfig['post'] = $config['post'];
+		}
+		if (array_key_exists('method', $config)) {
+			$newConfig['method'] = $config['method'];
+		}
+		if (array_key_exists('rawBody', $config)) {
+			$newConfig['rawBody'] = $config['rawBody'];
 		}
 		if (array_key_exists('identity', $config)) {
 			if (array_key_exists('id', $config['identity'])) {
