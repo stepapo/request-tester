@@ -22,7 +22,6 @@ use Nette\Utils\Arrays;
 use Nette\Utils\DateTime;
 use Tester\Assert;
 use Tester\Expect;
-use Tracy\Dumper;
 
 
 class RequestTester

@@ -6,7 +6,6 @@ use App\AppsModule\Model\Orm;
 use App\AppsModule\Model\Person\Person;
 use Nette\Security\Authenticator;
 use Nette\Security\Authorizator;
-use Nette\Security\IAuthenticator;
 use Nette\Security\UserStorage;
 
 

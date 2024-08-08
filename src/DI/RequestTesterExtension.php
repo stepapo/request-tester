@@ -9,7 +9,6 @@ use Nette\DI\Definitions\Statement;
 use Nette\Http\UrlScript;
 use Stepapo\RequestTester\RequestTester;
 use Stepapo\UrlTester\Mock\HttpRequest;
-use Stepapo\UrlTester\Mock\Session;
 
 
 class RequestTesterExtension extends CompilerExtension
@@ -21,6 +20,14 @@ class RequestTesterExtension extends CompilerExtension
 			$builder->getDefinition('http.request')
 				->setFactory(HttpRequest::class, [new Statement(UrlScript::class)]);
 		}
+//		if ($builder->hasDefinition('session.session')) {
+//			$builder->getDefinition('session.session')
+//				->setFactory(Session::class);
+//		}
+//		if ($builder->hasDefinition('security.user')) {
+//			$builder->getDefinition('security.user')
+//				->setFactory(User::class);
+//		}
 		$builder->addDefinition($this->prefix('requestTester.tester'))
 			->setFactory(RequestTester::class);
 	}
