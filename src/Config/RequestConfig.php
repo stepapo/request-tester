@@ -14,6 +14,7 @@ class RequestConfig extends Schematic
 	#[KeyProperty] public string $name;
 	public string $method = 'GET';
 	public ?array $headers = null;
+	public ?array $query = null;
 	public string $path;
 	public string|array|null $rawBody = null;
 	public ?array $post = null;

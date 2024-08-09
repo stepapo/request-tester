@@ -43,22 +43,18 @@ abstract class TestCase extends \Tester\TestCase
 			($this->refreshCallback)();
 		}
 
-		$url = rtrim($config->path, '/');
+		$url = rtrim($config->path, '/') . ($config->query ? ('?' . http_build_query($config->query)) : '');
 		$request = $this->requestTester->createRequestFromUrl($url);
-
 		// Method
 		$request->setMethod($config->method);
-
 		// Headers
 		if ($config->headers) {
 			$request->setHeaders($config->headers);
 		}
-
 		// RawBody
 		if ($config->rawBody) {
 			$request->setRawBody($config->rawBody);
 		}
-
 		// Identity
 		$identity = null;
 		if ($config->identity) {
@@ -67,7 +63,6 @@ abstract class TestCase extends \Tester\TestCase
 				: new SimpleIdentity($config->identity->id, (array)$config->identity->roles);
 			$request->setIdentity($identity);
 		}
-
 		// Form
 		if ($config->form && $config->form->name != 'none') {
 			if ($config->form->name) {
@@ -82,14 +77,11 @@ abstract class TestCase extends \Tester\TestCase
 				);
 			}
 		}
-
 		// Post
 		if ($config->post) {
 			$request->setPost($this->requestTester->prepareValues((array)$config->post, true));
 		}
-
 		$result = $this->requestTester->execute($request, $config->name);
-
 		// Asserts
 		if ($config->asserts) {
 			if ($config->asserts->httpCode && $config->asserts->httpCode >= 400) {

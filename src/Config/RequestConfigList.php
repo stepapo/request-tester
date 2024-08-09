@@ -39,6 +39,9 @@ class RequestConfigList extends ArrayObject
 		if (array_key_exists('headers', $config)) {
 			$newConfig['headers'] = $config['headers'];
 		}
+		if (array_key_exists('query', $config)) {
+			$newConfig['query'] = $config['query'];
+		}
 		if (array_key_exists('post', $config)) {
 			$newConfig['post'] = $config['post'];
 		}
