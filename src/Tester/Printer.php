@@ -122,14 +122,15 @@ class Printer implements OutputHandler
 			. ' '
 			. Dumper::color('aqua', sprintf('%0.3f', round((float) $test->getDuration(), 3)) . 's')
 			. ' '
-			. Dumper::color('teal', sprintf('%2u', $requestCount) . '×')
+			. Dumper::color('teal', sprintf('%2u', $requestCount) . '× ')
+			. Dumper::color('teal', sprintf('%0.3f', round((float) $test->getDuration() / $requestCount, 3)) . 's')
 			. ' '
 			. ($configWithIcon ?? $config)
 			. "\n";
 
 		$message = str_replace("\n", "\n   ", trim((string) $test->message)) . "\n";
 		if ($test->getResult() === Test::Failed) {
-			$write .= Dumper::color('red', "                 ") . "$message";
+			$write .= Dumper::color('red', "                        ") . "$message";
 		} elseif ($test->getResult() === Test::Skipped && $this->displaySkipped) {
 			$write .= "   Skipped: $message";
 		}
@@ -151,7 +152,8 @@ class Printer implements OutputHandler
 			. ($this->results[Test::Skipped] ? $this->results[Test::Skipped] . ' skipped, ' : '')
 			. "$this->totalRequestCount requests, "
 			. ($this->count !== $run ? ($this->count - $run) . ' not run, ' : '')
-			. sprintf('%0.1f', $this->time + microtime(true)) . ' seconds)' . Dumper::color() . "\n");
+			. sprintf('%0.1f', $t = $this->time + microtime(true)) . 's total, '
+			. sprintf('%0.3f', $t / $this->totalRequestCount * $this->runner->threadCount) . 's per request)' . Dumper::color() . "\n") ;
 
 		$this->buffer = null;
 	}
