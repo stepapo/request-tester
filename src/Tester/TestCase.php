@@ -15,8 +15,8 @@ abstract class TestCase extends \Tester\TestCase
 	public function __construct(
 		private array $config,
 		private RequestTester $requestTester,
-		private $identityCallback = null,
-		private $refreshCallback = null
+		private ?\Closure $identityCallback = null,
+		private ?\Closure $refreshCallback = null
 	) {}
 
 
