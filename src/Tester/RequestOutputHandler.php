@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace Stepapo\RequestTester\Tester;
 
+use Stepapo\Utils\Printer;
 use Tester\Dumper;
 use Tester\Runner\OutputHandler;
 use Tester\Runner\Runner;
 use Tester\Runner\Test;
 
 
-class Printer implements OutputHandler
+class RequestOutputHandler implements OutputHandler
 {
+	private Printer $printer;
+
 	private $file;
 
 	private ?string $buffer = null;
@@ -43,6 +46,7 @@ class Printer implements OutputHandler
 			Test::SKIPPED => 's',
 			Test::FAILED => $ciderMode ? Dumper::color('red', '🍎') : Dumper::color('white/red', 'F'),
 		];
+		$this->printer = new Printer;
 	}
 
 
@@ -60,11 +64,27 @@ class Printer implements OutputHandler
 		foreach ($this->setups as $name => $setup) {
 			$m .= Dumper::color($setup['color'], $setup['icon']) . ' ' . $name . ' ';
 		}
-		fwrite($this->file, $this->runner->getInterpreter()->getShortInfo()
+		$this->printer->printLine('Tests', 'aqua');
+		$this->printer->printSeparator();
+		$this->printer->printLine(
+			$this->runner->getInterpreter()->getShortInfo()
 			. ' | ' . $this->runner->getInterpreter()->getCommandLine()
-			. " | {$this->runner->threadCount} thread" . ($this->runner->threadCount > 1 ? 's' : '') . "\n\n"
-			. ($m ? $m . "\n\n" : "")
+			. " | {$this->runner->threadCount} thread" . ($this->runner->threadCount > 1 ? 's' : '')
 		);
+		$this->printer->printLine('');
+		$m = '';
+		foreach ($this->setups as $name => $setup) {
+			$m .= Dumper::color($setup['color'], $setup['icon']) . ' ' . $name . ' ';
+		}
+		if ($m) {
+			$this->printer->printLine($m);
+			$this->printer->printLine('');
+		}
+//		fwrite($this->file, $this->runner->getInterpreter()->getShortInfo()
+//			. ' | ' . $this->runner->getInterpreter()->getCommandLine()
+//			. " | {$this->runner->threadCount} thread" . ($this->runner->threadCount > 1 ? 's' : '') . "\n\n"
+//			. ($m ? $m . "\n\n" : "")
+//		);
 	}
 
 

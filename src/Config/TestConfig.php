@@ -14,7 +14,7 @@ class TestConfig extends Schematic
 	/** @var RequestConfig[] */ #[ArrayOfType(RequestConfig::class)] public RequestConfigList|array $requests;
 
 
-	public static function createFromArray(mixed $config = [], mixed $key = null, bool $skipDefaults = false): static
+	public static function createFromArray(mixed $config = [], mixed $key = null, bool $skipDefaults = false, mixed $parentKey = null): static
 	{
 		$data = new self;
 		$data->name = $config['name'];

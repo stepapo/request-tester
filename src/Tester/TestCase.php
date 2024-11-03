@@ -8,6 +8,9 @@ use Nette\Security\SimpleIdentity;
 use Stepapo\RequestTester\Config\RequestConfig;
 use Stepapo\RequestTester\Config\TestConfig;
 use Stepapo\RequestTester\RequestTester;
+use Stepapo\RequestTester\TesterException;
+use Tester\AssertException;
+use Tester\Dumper;
 
 
 abstract class TestCase extends \Tester\TestCase
@@ -28,7 +31,34 @@ abstract class TestCase extends \Tester\TestCase
 				$this->setUp();
 			}
 			$this->setUpRequest();
-			$this->request($config);
+			try {
+				$this->request($config);
+			} catch (\Exception $e) {
+				if ($e instanceof AssertException) {
+					throw $e->setMessage(sprintf(
+						'%s: %s',
+						Dumper::color('red', $config->name),
+						$e->origMessage,
+					));
+				}
+				if (str_contains($e->getMessage(), 'deadlock detected')) {
+					throw new AssertException(
+						sprintf(
+							'%s: %s',
+							Dumper::color('red', $config->name),
+							Dumper::color('white', 'deadlock detected, run again')
+						),
+						null,
+						null,
+					);
+				}
+				throw new AssertException(
+					sprintf('%s: ', Dumper::color('red', $config->name)),
+					null,
+					null,
+					$e,
+				);
+			}
 			$this->tearDownRequest();
 			if ($config->reset === true) {
 				$this->tearDown();

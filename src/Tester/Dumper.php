@@ -63,8 +63,11 @@ class Dumper extends \Tester\Dumper
 				'%1' => self::color('yellow') . self::toLine($actual) . self::color('white'),
 				'%2' => self::color('yellow') . self::toLine($expected) . self::color('white'),
 			]);
+			if ($e->getPrevious()) {
+				$message .= static::dumpException($e->getPrevious());
+			}
 		} else {
-			$message = "\n                     " . ($e instanceof \ErrorException ? Helpers::errorTypeToString($e->getSeverity()) : get_class($e))
+			$message = ($e instanceof \ErrorException ? Helpers::errorTypeToString($e->getSeverity()) : get_class($e))
 				. ': ' . preg_replace('#[\x00-\x09\x0B-\x1F]+#', ' ', $e->getMessage()) . "\n";
 
 			foreach ($trace as $item) {

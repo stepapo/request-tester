@@ -26,7 +26,7 @@ class TestResult
 
 	public function getResponse(): Response
 	{
-		Assert::null($this->badRequestException, Dumper::color('red', $this->name));
+		Assert::null($this->badRequestException);
 		assert($this->response !== null);
 		return $this->response;
 	}
@@ -35,7 +35,7 @@ class TestResult
 	public function getTextResponse(): TextResponse
 	{
 		$response = $this->getResponse();
-		Assert::type(TextResponse::class, $response, Dumper::color('red', $this->name));
+		Assert::type(TextResponse::class, $response);
 		assert($response instanceof TextResponse);
 		return $response;
 	}
@@ -46,7 +46,7 @@ class TestResult
 		if (!$this->textResponseSource) {
 			$source = $this->getTextResponse()->getSource();
 			$this->textResponseSource = is_object($source) ? $source->__toString(true) : (string) $source;
-			Assert::type('string', $this->textResponseSource, Dumper::color('red', $this->name));
+			Assert::type('string', $this->textResponseSource);
 		}
 		return $this->textResponseSource;
 	}
@@ -55,7 +55,7 @@ class TestResult
 	public function getJsonResponse(): JsonResponse
 	{
 		$response = $this->getResponse();
-		Assert::type(JsonResponse::class, $response, Dumper::color('red', $this->name));
+		Assert::type(JsonResponse::class, $response);
 		assert($response instanceof JsonResponse);
 		return $response;
 	}
@@ -72,7 +72,7 @@ class TestResult
 		if ($match !== null) {
 			if (!Assert::isMatching($match, $source)) {
 				[$pattern, $actual] = Assert::expandMatchingPatterns($match, $source);
-				Assert::fail(Dumper::color('red', $this->name) . ': ' . Dumper::color('white', 'Should render') . ' %2 but does not', $actual, $m);
+				Assert::fail(Dumper::color('white', 'Should render') . ' %2 but does not', $actual, $m);
 			}
 		}
 		return $this;
@@ -92,7 +92,7 @@ class TestResult
 			$match = "%A%$match%A%";
 			if (Assert::isMatching($match, $source)) {
 				[$pattern, $actual] = Assert::expandMatchingPatterns($match, $source);
-				Assert::fail(Dumper::color('red', $this->name) . ': ' . Dumper::color('white', 'Should NOT render') . ' %2 but does', $actual, $m);
+				Assert::fail(Dumper::color('white', 'Should NOT render') . ' %2 but does', $actual, $m);
 			}
 		}
 		return $this;
@@ -103,7 +103,7 @@ class TestResult
 	{
 		$response = $this->getJsonResponse();
 		if (func_num_args() !== 0) {
-			Assert::equal($expected, $response->getPayload(), Dumper::color('red', $this->name));
+			Assert::equal($expected, $response->getPayload());
 		}
 		return $this;
 	}
@@ -111,10 +111,10 @@ class TestResult
 
 	public function assertBadRequest(int $code = null): self
 	{
-		Assert::type(BadRequestException::class, $this->badRequestException, Dumper::color('red', $this->name));
+		Assert::type(BadRequestException::class, $this->badRequestException);
 		assert($this->badRequestException !== null);
 		if ($code !== null) {
-			Assert::same($code, $this->badRequestException->getHttpCode(), Dumper::color('red', $this->name));
+			Assert::same($code, $this->badRequestException->getHttpCode());
 		}
 		return $this;
 	}
