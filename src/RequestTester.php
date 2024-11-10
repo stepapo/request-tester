@@ -12,7 +12,9 @@ use Nette\Application\Request as AppRequest;
 use Nette\Application\Responses\RedirectResponse;
 use Nette\Application\UI\Presenter;
 use Nette\Http\IRequest;
-use Nette\Http\Request as HttpRequest;
+//use Nette\Http\Request as HttpRequest;
+use Nette\Http\Request;
+use Stepapo\UrlTester\Mock\HttpRequest;
 use Nette\Http\Session;
 use Nette\Http\UrlScript;
 use Nette\Routing\Router;
@@ -22,6 +24,7 @@ use Nette\Utils\Arrays;
 use Nette\Utils\DateTime;
 use Tester\Assert;
 use Tester\Expect;
+use Tracy\Dumper;
 
 
 class RequestTester
@@ -75,6 +78,10 @@ class RequestTester
 	{
 		$this->loginUser($request);
 		$this->setupHttpRequest($request);
+//		if (str_contains($request->url, 'admin-updatePageForm-personFinder-searchPerson')) {
+//			Dumper::dump($this->httpRequest);
+//			die();
+//		}
 		$presenter = $this->presenterFactory->createPresenter($request->presenterName);
 		if ($presenter instanceof Presenter) {
 			$this->setupUIPresenter($presenter);
@@ -107,14 +114,26 @@ class RequestTester
 
 	protected function setupHttpRequest(TestRequest $request): void
 	{
-		\Closure::bind(function () use ($request) {
-			/** @var HttpRequest $this */
-			$this->method = ($request->post) ? 'POST' : $request->methodName;
-			$this->headers = $request->headers + $this->headers;
-			$this->post = $request->post;
-			$this->url = new UrlScript($request->url);
-			$this->rawBodyCallback = fn() => $request->rawBody;
-		}, $this->httpRequest, HttpRequest::class)->__invoke();
+//		$this->httpRequest = new HttpRequest(
+//			url: new UrlScript($request->url),
+//			post: $request->post,
+//			headers: $request->headers,
+//			method: ($request->post) ? 'POST' : $request->methodName,
+//			rawBodyCallback: fn() => $request->rawBody
+//		);
+		$this->httpRequest->method = ($request->post) ? 'POST' : $request->methodName;
+		$this->httpRequest->headers = $request->headers + $this->httpRequest->headers;
+		$this->httpRequest->post = $request->post;
+		$this->httpRequest->url = new UrlScript($request->url);
+		$this->httpRequest->rawBodyCallback = fn() => $request->rawBody;
+//		\Closure::bind(function () use ($request) {
+//			/** @var Request $this */
+//			$this->method = ($request->post) ? 'POST' : $request->methodName;
+//			$this->headers = $request->headers + $this->headers;
+//			$this->post = $request->post;
+//			$this->url = new UrlScript($request->url);
+//			$this->rawBodyCallback = fn() => $request->rawBody;
+//		}, $this->httpRequest, Request::class)->__invoke();
 	}
 
 

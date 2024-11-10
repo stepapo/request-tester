@@ -9,6 +9,7 @@ use Nette\DI\Definitions\Statement;
 use Nette\Http\UrlScript;
 use Stepapo\RequestTester\RequestTester;
 use Stepapo\UrlTester\Mock\HttpRequest;
+use Stepapo\UrlTester\Mock\Session;
 
 
 class RequestTesterExtension extends CompilerExtension

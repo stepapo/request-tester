@@ -64,6 +64,7 @@ class RequestOutputHandler implements OutputHandler
 		foreach ($this->setups as $name => $setup) {
 			$m .= Dumper::color($setup['color'], $setup['icon']) . ' ' . $name . ' ';
 		}
+		$this->printer->printBigSeparator();
 		$this->printer->printLine('Tests', 'aqua');
 		$this->printer->printSeparator();
 		$this->printer->printLine(
