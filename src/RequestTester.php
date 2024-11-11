@@ -14,7 +14,7 @@ use Nette\Application\UI\Presenter;
 use Nette\Http\IRequest;
 //use Nette\Http\Request as HttpRequest;
 use Nette\Http\Request;
-use Stepapo\UrlTester\Mock\HttpRequest;
+use Stepapo\RequestTester\Mock\HttpRequest;
 use Nette\Http\Session;
 use Nette\Http\UrlScript;
 use Nette\Routing\Router;
