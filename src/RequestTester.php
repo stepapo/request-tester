@@ -77,10 +77,6 @@ class RequestTester
 	{
 		$this->loginUser($request);
 		$this->setupHttpRequest($request);
-//		if (str_contains($request->url, 'admin-updatePageForm-personFinder-searchPerson')) {
-//			Dumper::dump($this->httpRequest);
-//			die();
-//		}
 		$presenter = $this->presenterFactory->createPresenter($request->presenterName);
 		if ($presenter instanceof Presenter) {
 			$this->setupUIPresenter($presenter);
