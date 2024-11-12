@@ -7,9 +7,8 @@ namespace Stepapo\RequestTester\DI;
 use Nette\DI\CompilerExtension;
 use Nette\DI\Definitions\Statement;
 use Nette\Http\UrlScript;
-use Stepapo\RequestTester\RequestTester;
 use Stepapo\RequestTester\Mock\HttpRequest;
-use Stepapo\RequestTester\Mock\Session;
+use Stepapo\RequestTester\RequestTester;
 
 
 class RequestTesterExtension extends CompilerExtension

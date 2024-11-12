@@ -8,7 +8,6 @@ use Nette\Security\SimpleIdentity;
 use Stepapo\RequestTester\Config\RequestConfig;
 use Stepapo\RequestTester\Config\TestConfig;
 use Stepapo\RequestTester\RequestTester;
-use Stepapo\RequestTester\TesterException;
 use Tester\AssertException;
 use Tester\Dumper;
 

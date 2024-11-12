@@ -12,9 +12,6 @@ use Nette\Application\Request as AppRequest;
 use Nette\Application\Responses\RedirectResponse;
 use Nette\Application\UI\Presenter;
 use Nette\Http\IRequest;
-//use Nette\Http\Request as HttpRequest;
-use Nette\Http\Request;
-use Stepapo\RequestTester\Mock\HttpRequest;
 use Nette\Http\Session;
 use Nette\Http\UrlScript;
 use Nette\Routing\Router;
@@ -22,9 +19,11 @@ use Nette\Security\IIdentity;
 use Nette\Security\User;
 use Nette\Utils\Arrays;
 use Nette\Utils\DateTime;
+use Stepapo\RequestTester\Mock\HttpRequest;
 use Tester\Assert;
 use Tester\Expect;
-use Tracy\Dumper;
+
+//use Nette\Http\Request as HttpRequest;
 
 
 class RequestTester
