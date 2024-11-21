@@ -40,7 +40,7 @@ abstract class TestCase extends \Tester\TestCase
 						$e->origMessage,
 					));
 				}
-				if (str_contains($e->getMessage(), 'deadlock detected')) {
+				if (str_contains(strtolower($e->getMessage()), 'deadlock')) {
 					throw new AssertException(
 						sprintf(
 							'%s: %s',
