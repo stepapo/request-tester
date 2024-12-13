@@ -11,7 +11,7 @@ use Stepapo\Utils\Schematic;
 class TestConfig extends Schematic
 {
 	public string $name;
-	/** @var RequestConfig[] */ #[ArrayOfType(RequestConfig::class)] public RequestConfigList|array $requests;
+	/** @var RequestConfig[] */ #[ArrayOfType(RequestConfig::class)] public RequestConfigList $requests;
 
 
 	public static function createFromArray(mixed $config = [], mixed $key = null, bool $skipDefaults = false, mixed $parentKey = null): static

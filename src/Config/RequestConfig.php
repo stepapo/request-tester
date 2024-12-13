@@ -20,8 +20,8 @@ class RequestConfig extends Schematic
 	public ?array $post = null;
 	public bool $reset = true;
 	public bool $refresh = false;
-	#[Type(IdentityConfig::class)] public IdentityConfig|array|null $identity = null;
-	#[Type(FormConfig::class)] public FormConfig|array|null $form = null;
-	#[Type(AssertConfig::class)] public AssertConfig|array|null $asserts = null;
+	#[Type(IdentityConfig::class)] public ?IdentityConfig $identity = null;
+	#[Type(FormConfig::class)] public ?FormConfig $form = null;
+	#[Type(AssertConfig::class)] public ?AssertConfig $asserts = null;
 }
 
