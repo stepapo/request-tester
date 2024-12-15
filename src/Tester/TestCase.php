@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Stepapo\RequestTester\Tester;
 
 use Nette\Security\SimpleIdentity;
-use Stepapo\RequestTester\Config\RequestConfig;
-use Stepapo\RequestTester\Config\TestConfig;
+use Stepapo\RequestTester\Config\Request;
+use Stepapo\RequestTester\Config\Test;
 use Stepapo\RequestTester\RequestTester;
 use Tester\AssertException;
 use Tester\Dumper;
@@ -24,19 +24,19 @@ abstract class TestCase extends \Tester\TestCase
 
 	public function testRequests()
 	{
-		$test = TestConfig::createFromArray($this->config);
-		foreach ($test->requests as $config) {
-			if ($config->reset === true) {
+		$test = Test::createFromArray($this->config);
+		foreach ($test->requests as $request) {
+			if ($request->reset === true) {
 				$this->setUp();
 			}
 			$this->setUpRequest();
 			try {
-				$this->request($config);
+				$this->request($request);
 			} catch (\Exception $e) {
 				if ($e instanceof AssertException) {
 					throw $e->setMessage(sprintf(
 						'%s: %s',
-						Dumper::color('red', $config->name),
+						Dumper::color('red', $request->name),
 						$e->origMessage,
 					));
 				}
@@ -44,7 +44,7 @@ abstract class TestCase extends \Tester\TestCase
 					throw new AssertException(
 						sprintf(
 							'%s: %s',
-							Dumper::color('red', $config->name),
+							Dumper::color('red', $request->name),
 							Dumper::color('white', 'deadlock detected, run again')
 						),
 						null,
@@ -52,84 +52,84 @@ abstract class TestCase extends \Tester\TestCase
 					);
 				}
 				throw new AssertException(
-					sprintf('%s: ', Dumper::color('red', $config->name)),
+					sprintf('%s: ', Dumper::color('red', $request->name)),
 					null,
 					null,
 					$e,
 				);
 			}
 			$this->tearDownRequest();
-			if ($config->reset === true) {
+			if ($request->reset === true) {
 				$this->tearDown();
 			}
 		}
 	}
 
 
-	protected function request(RequestConfig $config)
+	protected function request(Request $request)
 	{
-		if ($config->refresh === true && $this->refreshCallback) {
+		if ($request->refresh === true && $this->refreshCallback) {
 			($this->refreshCallback)();
 		}
 
-		$url = rtrim($config->path, '/') . ($config->query ? ('?' . http_build_query($config->query)) : '');
-		$request = $this->requestTester->createRequestFromUrl($url);
+		$url = rtrim($request->path, '/') . ($request->query ? ('?' . http_build_query($request->query)) : '');
+		$testRequest = $this->requestTester->createRequestFromUrl($url);
 		// Method
-		$request->setMethod($config->method);
+		$testRequest->setMethod($request->method);
 		// Headers
-		if ($config->headers) {
-			$request->setHeaders($config->headers);
+		if ($request->headers) {
+			$testRequest->setHeaders($request->headers);
 		}
 		// RawBody
-		if ($config->rawBody) {
-			$request->setRawBody($config->rawBody);
+		if ($request->rawBody) {
+			$testRequest->setRawBody($request->rawBody);
 		}
 		// Identity
 		$identity = null;
-		if ($config->identity) {
+		if ($request->identity) {
 			$identity = $this->identityCallback
-				? ($this->identityCallback)($config)
-				: new SimpleIdentity($config->identity->id, (array)$config->identity->roles);
-			$request->setIdentity($identity);
+				? ($this->identityCallback)($request)
+				: new SimpleIdentity($request->identity->id, (array)$request->identity->roles);
+			$testRequest->setIdentity($identity);
 		}
 		// Form
-		if ($config->form && $config->form->name != 'none') {
-			if ($config->form->name) {
+		if ($request->form && $request->form->name != 'none') {
+			if ($request->form->name) {
 				$send = true;
-				if (isset($config->form->post['send']) && $config->form->post['send'] === 'false') {
+				if (isset($request->form->post['send']) && $request->form->post['send'] === 'false') {
 					$send = false;
-					unset($config->form->post['send']);
+					unset($request->form->post['send']);
 				}
-				$request->setForm(
-					$config->form->name,
-					$this->requestTester->prepareValues((array)$config->form->post + ($send ? ['send' => '1'] : []), true),
+				$testRequest->setForm(
+					$request->form->name,
+					$this->requestTester->prepareValues((array)$request->form->post + ($send ? ['send' => '1'] : []), true),
 				);
 			}
 		}
 		// Post
-		if ($config->post) {
-			$request->setPost($this->requestTester->prepareValues((array)$config->post, true));
+		if ($request->post) {
+			$testRequest->setPost($this->requestTester->prepareValues((array)$request->post, true));
 		}
-		$result = $this->requestTester->execute($request, $config->name);
+		$result = $this->requestTester->execute($testRequest, $request->name);
 		// Asserts
-		if ($config->asserts) {
-			if ($config->asserts->httpCode && $config->asserts->httpCode >= 400) {
-				$result->assertBadRequest($config->asserts->httpCode);
+		if ($request->asserts) {
+			if ($request->asserts->httpCode && $request->asserts->httpCode >= 400) {
+				$result->assertBadRequest($request->asserts->httpCode);
 				return;
 			}
 			$result = $this->requestTester->getFinalResult($result, $identity);
-			if ($config->asserts->renders) {
-				foreach ($config->asserts->renders as $renders) {
+			if ($request->asserts->renders) {
+				foreach ($request->asserts->renders as $renders) {
 					$result->assertRenders((array)$renders);
 				}
 			}
-			if ($config->asserts->notRenders) {
-				foreach ($config->asserts->notRenders as $notRenders) {
+			if ($request->asserts->notRenders) {
+				foreach ($request->asserts->notRenders as $notRenders) {
 					$result->assertNotRenders((array)$notRenders);
 				}
 			}
-			if ($config->asserts->json !== null) {
-				$result->assertJson($this->requestTester->prepareValues($config->asserts->json));
+			if ($request->asserts->json !== null) {
+				$result->assertJson($this->requestTester->prepareValues($request->asserts->json));
 			}
 		}
 	}

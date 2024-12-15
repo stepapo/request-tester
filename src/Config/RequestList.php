@@ -7,7 +7,7 @@ namespace Stepapo\RequestTester\Config;
 use ArrayObject;
 
 
-class RequestConfigList extends ArrayObject
+class RequestList extends ArrayObject
 {
 	public static function createFromArray(array $config): self
 	{
@@ -88,7 +88,7 @@ class RequestConfigList extends ArrayObject
 			}
 		} else {
 			unset($newConfig['requests']);
-			$this->append(RequestConfig::createFromArray($newConfig));
+			$this->append(Request::createFromArray($newConfig));
 		}
 	}
 }

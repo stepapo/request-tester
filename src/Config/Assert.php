@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Stepapo\RequestTester\Config;
 
 use Stepapo\Utils\Attribute\ToArray;
-use Stepapo\Utils\Schematic;
+use Stepapo\Utils\Config;
 
 
-class AssertConfig extends Schematic
+class Assert extends Config
 {
 	public ?int $httpCode = null;
 	#[ToArray] public ?array $renders = null;

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Stepapo\RequestTester\Config;
 
-use Stepapo\Utils\Schematic;
+use Stepapo\Utils\Config;
 
 
-class FormConfig extends Schematic
+class Form extends Config
 {
 	public string $name;
 	public ?array $post = null;

@@ -6,10 +6,10 @@ namespace Stepapo\RequestTester\Config;
 
 use Stepapo\Utils\Attribute\KeyProperty;
 use Stepapo\Utils\Attribute\Type;
-use Stepapo\Utils\Schematic;
+use Stepapo\Utils\Config;
 
 
-class RequestConfig extends Schematic
+class Request extends Config
 {
 	#[KeyProperty] public string $name;
 	public string $method = 'GET';
@@ -20,8 +20,8 @@ class RequestConfig extends Schematic
 	public ?array $post = null;
 	public bool $reset = true;
 	public bool $refresh = false;
-	#[Type(IdentityConfig::class)] public ?IdentityConfig $identity = null;
-	#[Type(FormConfig::class)] public ?FormConfig $form = null;
-	#[Type(AssertConfig::class)] public ?AssertConfig $asserts = null;
+	#[Type(Identity::class)] public ?Identity $identity = null;
+	#[Type(Form::class)] public ?Form $form = null;
+	#[Type(Assert::class)] public ?Assert $asserts = null;
 }
 
