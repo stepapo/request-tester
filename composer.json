@@ -14,7 +14,7 @@
 		"issues": "https://github.com/stepapo/request-tester/issues"
 	},
 	"require": {
-		"php": ">=8.1",
+		"php": ">=8.3",
 		"nette/application": "^3.2",
 		"nette/http": "^3.2",
 		"nette/routing": "^3.1",
