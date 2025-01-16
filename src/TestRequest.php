@@ -77,7 +77,7 @@ class TestRequest
 	}
 
 
-	public function setIdentity(IIdentity $identity = null): self
+	public function setIdentity(?IIdentity $identity = null): self
 	{
 		$this->identity = $identity;
 		return $this;

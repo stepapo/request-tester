@@ -109,7 +109,7 @@ class TestResult
 	}
 
 
-	public function assertBadRequest(int $code = null): self
+	public function assertBadRequest(?int $code = null): self
 	{
 		Assert::type(BadRequestException::class, $this->badRequestException);
 		assert($this->badRequestException !== null);
