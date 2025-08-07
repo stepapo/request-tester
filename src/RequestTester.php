@@ -109,26 +109,11 @@ class RequestTester
 
 	protected function setupHttpRequest(TestRequest $request): void
 	{
-//		$this->httpRequest = new HttpRequest(
-//			url: new UrlScript($request->url),
-//			post: $request->post,
-//			headers: $request->headers,
-//			method: ($request->post) ? 'POST' : $request->methodName,
-//			rawBodyCallback: fn() => $request->rawBody
-//		);
 		$this->httpRequest->method = ($request->post) ? 'POST' : $request->methodName;
 		$this->httpRequest->headers = $request->headers + $this->httpRequest->headers;
 		$this->httpRequest->post = $request->post;
 		$this->httpRequest->url = new UrlScript($request->url);
 		$this->httpRequest->rawBodyCallback = fn() => $request->rawBody;
-//		\Closure::bind(function () use ($request) {
-//			/** @var Request $this */
-//			$this->method = ($request->post) ? 'POST' : $request->methodName;
-//			$this->headers = $request->headers + $this->headers;
-//			$this->post = $request->post;
-//			$this->url = new UrlScript($request->url);
-//			$this->rawBodyCallback = fn() => $request->rawBody;
-//		}, $this->httpRequest, Request::class)->__invoke();
 	}
 
 
