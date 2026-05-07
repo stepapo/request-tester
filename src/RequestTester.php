@@ -22,6 +22,7 @@ use Nette\Utils\DateTime;
 use Stepapo\RequestTester\Mock\HttpRequest;
 use Tester\Assert;
 use Tester\Expect;
+use Tracy\Dumper;
 
 //use Nette\Http\Request as HttpRequest;
 
@@ -148,7 +149,7 @@ class RequestTester
 
 	public function createRequestFromUrl(string $url): TestRequest
 	{
-		$httpRequest = new HttpRequest(new UrlScript(ltrim($url, ':')));
+		$httpRequest = new HttpRequest(new UrlScript(ltrim($url, ':'), '/'));
 
 		$params = $this->router->match($httpRequest);
 

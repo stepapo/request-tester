@@ -15,6 +15,7 @@ class Request extends Config
 	public string $method = 'GET';
 	public ?array $headers = null;
 	public ?array $query = null;
+	public ?string $host = null;
 	public string $path;
 	public string|array|null $rawBody = null;
 	public ?array $post = null;

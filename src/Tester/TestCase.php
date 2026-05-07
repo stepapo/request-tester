@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Stepapo\RequestTester\Tester;
 
+use Nette\Application\UI\TemplateFactory;
 use Nette\Security\SimpleIdentity;
 use Stepapo\RequestTester\Config\Request;
 use Stepapo\RequestTester\Config\Test;
@@ -18,7 +19,7 @@ abstract class TestCase extends \Tester\TestCase
 		private array $config,
 		private RequestTester $requestTester,
 		private ?\Closure $identityCallback = null,
-		private ?\Closure $refreshCallback = null
+		private ?\Closure $refreshCallback = null,
 	) {}
 
 
@@ -72,7 +73,7 @@ abstract class TestCase extends \Tester\TestCase
 			($this->refreshCallback)();
 		}
 
-		$url = rtrim($request->path, '/') . ($request->query ? ('?' . http_build_query($request->query)) : '');
+		$url = '//' . ($request->host ?: 'test') . '/' . rtrim($request->path, '/') . ($request->query ? ('?' . http_build_query($request->query)) : '');
 		$testRequest = $this->requestTester->createRequestFromUrl($url);
 		// Method
 		$testRequest->setMethod($request->method);
