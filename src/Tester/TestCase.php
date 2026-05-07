@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Stepapo\RequestTester\Tester;
 
-use Nette\Application\UI\TemplateFactory;
 use Nette\Security\SimpleIdentity;
 use Stepapo\RequestTester\Config\Request;
 use Stepapo\RequestTester\Config\Test;

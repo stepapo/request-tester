@@ -22,9 +22,6 @@ use Nette\Utils\DateTime;
 use Stepapo\RequestTester\Mock\HttpRequest;
 use Tester\Assert;
 use Tester\Expect;
-use Tracy\Dumper;
-
-//use Nette\Http\Request as HttpRequest;
 
 
 class RequestTester
