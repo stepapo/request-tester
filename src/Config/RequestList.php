@@ -33,6 +33,9 @@ class RequestList extends ArrayObject
 		$newConfig = $defaultConfig ?: $config;
 		$newConfig['name'] = ($defaultConfig && $defaultConfig['name'] ? $defaultConfig['name'] . ' ' : '') . $name;
 
+		if (array_key_exists('host', $config)) {
+			$newConfig['host'] = $config['host'];
+		}
 		if (array_key_exists('path', $config)) {
 			$newConfig['path'] = $config['path'];
 		}
