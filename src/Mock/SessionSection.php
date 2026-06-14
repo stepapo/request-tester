@@ -51,7 +51,7 @@ class SessionSection extends Nette\Http\SessionSection
 	}
 
 
-	public function setExpiration(?string $time, string|array|null $variables = null): static
+	public function setExpiration(?string $expire, string|array|null $variables = null): static
 	{
 		return $this;
 	}
