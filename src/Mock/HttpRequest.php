@@ -2,6 +2,8 @@
 
 namespace Stepapo\RequestTester\Mock;
 
+use Nette\Http\FetchDest;
+use Nette\Http\FetchSite;
 use Nette\Http\Request;
 use Nette\Http\UrlImmutable;
 use Nette\Http\UrlScript;
@@ -45,6 +47,12 @@ class HttpRequest extends Request
 		parent::__construct($url, $post, $files, $cookies, $headers, $method, $remoteAddress, $remoteHost, $rawBodyCallback);
 		$this->headers = array_change_key_case($headers, CASE_LOWER);
 		$this->rawBodyCallback = $rawBodyCallback ? $rawBodyCallback(...) : null;
+	}
+
+
+	public function isFrom(FetchSite|array $site, FetchDest|array|null $dest = null, ?bool $user = null): bool
+	{
+		return true;
 	}
 
 
