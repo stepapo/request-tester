@@ -36,7 +36,7 @@ class HttpRequest extends Request
 	public function __construct(
 		public UrlScript $url,
 		public array $post = [],
-		private readonly  array $files = [],
+		private readonly array $files = [],
 		private readonly array $cookies = [],
 		array $headers = [],
 		public string $method = 'GET',

@@ -36,7 +36,7 @@ class TestResult
 	{
 		$response = $this->getResponse();
 		Assert::type(TextResponse::class, $response);
-		assert($response instanceof TextResponse);
+		assert($response instanceof TextResponse); // @phpstan-ignore function.alreadyNarrowedType, instanceof.alwaysTrue
 		return $response;
 	}
 
@@ -45,7 +45,7 @@ class TestResult
 	{
 		if (!$this->textResponseSource) {
 			$source = $this->getTextResponse()->getSource();
-			$this->textResponseSource = is_object($source) ? $source->__toString(true) : (string) $source;
+			$this->textResponseSource = is_object($source) ? $source->__toString(true) : (string) $source; // @phpstan-ignore method.notFound
 			Assert::type('string', $this->textResponseSource);
 		}
 		return $this->textResponseSource;
@@ -56,7 +56,7 @@ class TestResult
 	{
 		$response = $this->getResponse();
 		Assert::type(JsonResponse::class, $response);
-		assert($response instanceof JsonResponse);
+		assert($response instanceof JsonResponse); // @phpstan-ignore function.alreadyNarrowedType, instanceof.alwaysTrue
 		return $response;
 	}
 
@@ -67,12 +67,11 @@ class TestResult
 			$m = implode(', ', $match);
 			$match = '%A?%' . implode('%A?%', $match) . '%A?%';
 		}
-		assert(is_string($match) || $match === null);
 		$source = $this->getTextResponseSource();
 		if ($match !== null) {
 			if (!Assert::isMatching($match, $source)) {
 				[$pattern, $actual] = Assert::expandMatchingPatterns($match, $source);
-				Assert::fail(Dumper::color('white', 'Should render') . ' %2 but does not', $actual, $m);
+				Assert::fail(Dumper::color('white', 'Should render') . ' %2 but does not', $actual, $m ?? $match);
 			}
 		}
 		return $this;
@@ -84,7 +83,6 @@ class TestResult
 		if (is_string($matches)) {
 			$matches = [$matches];
 		}
-		assert(is_array($matches));
 		$source = $this->getTextResponseSource();
 		foreach ($matches as $match) {
 			assert(is_string($match));
@@ -112,7 +110,6 @@ class TestResult
 	public function assertBadRequest(?int $code = null): self
 	{
 		Assert::type(BadRequestException::class, $this->badRequestException);
-		assert($this->badRequestException !== null);
 		if ($code !== null) {
 			Assert::same($code, $this->badRequestException->getHttpCode());
 		}

@@ -25,4 +25,3 @@ class Request extends Config
 	#[Type(Form::class)] public ?Form $form = null;
 	#[Type(Assert::class)] public ?Assert $asserts = null;
 }
-

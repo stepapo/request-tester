@@ -15,9 +15,8 @@ class RequestOutputHandler implements OutputHandler
 {
 	private Printer $printer;
 
+	/** @var false|resource */
 	private $file;
-
-	private ?string $buffer = null;
 
 	private float $time;
 
@@ -155,7 +154,7 @@ class RequestOutputHandler implements OutputHandler
 		} elseif ($test->getResult() === Test::Skipped && $this->displaySkipped) {
 			$write .= "   Skipped: $message";
 		}
-
+		assert($this->file !== false);
 		fwrite($this->file, $write);
 	}
 
@@ -163,10 +162,9 @@ class RequestOutputHandler implements OutputHandler
 	public function end(): void
 	{
 		$run = array_sum($this->results);
-
+		assert($this->file !== false);
 		fwrite($this->file, !$this->count ? "No tests found\n" :
 			"\n"
-			. ($this->buffer ? "\n" . $this->buffer . "\n" : "")
 			. ($this->results[Test::Failed] ? Dumper::color('red') . 'FAILURES!' : Dumper::color('green') . 'OK')
 			. " ($this->count test" . ($this->count > 1 ? 's' : '') . ', '
 			. ($this->results[Test::Failed] ? $this->results[Test::Failed] . ' failure' . ($this->results[Test::Failed] > 1 ? 's' : '') . ', ' : '')
@@ -175,12 +173,10 @@ class RequestOutputHandler implements OutputHandler
 			. ($this->count !== $run ? ($this->count - $run) . ' not run, ' : '')
 			. sprintf('%0.1f', $t = $this->time + microtime(true)) . 's total, '
 			. sprintf('%0.3f', $t / $this->totalRequestCount * $this->runner->threadCount) . 's per request)' . Dumper::color() . "\n") ;
-
-		$this->buffer = null;
 	}
 
 
-	private function countRequests($config)
+	private function countRequests(array $config): int
 	{
 		$c = 0;
 		if (!isset($config['requests'])) {

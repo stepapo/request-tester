@@ -13,8 +13,8 @@ class User extends \Nette\Security\User
 {
 	public function __construct(
 		UserStorage $legacyStorage,
-		Authenticator $authenticator = null,
-		Authorizator $authorizator = null,
+		?Authenticator $authenticator = null,
+		?Authorizator $authorizator = null,
 	) {
 		parent::__construct($legacyStorage, $authenticator, $authorizator);
 	}

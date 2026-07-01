@@ -11,7 +11,7 @@ use Stepapo\Utils\Config;
 class Identity extends Config
 {
 	public ?int $id = null;
-	#[ToArray] public ?array $roles = null;
+	/** @var list<string>|null */ #[ToArray] public ?array $roles = null;
 	public ?string $username = null;
 	public ?string $domain = null;
 }

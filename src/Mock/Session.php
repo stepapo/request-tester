@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Stepapo\RequestTester\Mock;
 
@@ -7,7 +9,7 @@ use Nette;
 
 class Session extends Nette\Http\Session
 {
-	/** @var SessionSection[] */
+	/** @var Nette\Http\SessionSection[] */
 	private array $sections = [];
 
 	private bool $started = false;
@@ -64,7 +66,7 @@ class Session extends Nette\Http\Session
 	}
 
 
-	public function setFakeId($id)
+	public function setFakeId(string $id): void
 	{
 		$this->id = $id;
 	}
@@ -73,7 +75,7 @@ class Session extends Nette\Http\Session
 	public function getSection(string $section, $class = SessionSection::class): Nette\Http\SessionSection
 	{
 		if (isset($this->sections[$section])) {
-			return $this->sections[$section];
+			return $this->sections[$section]; // @phpstan-ignore return.type
 		}
 
 		$sessionSection = parent::getSection($section, $class);
@@ -130,7 +132,7 @@ class Session extends Nette\Http\Session
 	}
 
 
-	public function setCookieParameters(string $path, string $domain = null, bool $secure = null, ?string $samesite = null): static
+	public function setCookieParameters(string $path, ?string $domain = null, ?bool $secure = null, Nette\Http\SameSite|string|null $samesite = null): static
 	{
 		return $this;
 	}

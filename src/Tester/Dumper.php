@@ -72,11 +72,8 @@ class Dumper extends \Tester\Dumper
 
 			foreach ($trace as $item) {
 				$item += ['file' => null, 'class' => null, 'type' => null, 'function' => null];
-				if ($e instanceof AssertException && $item['file'] === __DIR__ . DIRECTORY_SEPARATOR . 'Assert.php') {
-					continue;
-				}
 				$line = $item['class'] === Assert::class && method_exists($item['class'], $item['function'])
-				&& strpos($tmp = file($item['file'])[$item['line'] - 1], "::$item[function](") ? $tmp : null;
+				&& strpos($tmp = file($item['file'])[$item['line'] - 1], "::$item[function](") ? $tmp : null; // @phpstan-ignore offsetAccess.nonOffsetAccessible, offsetAccess.notFound
 
 				$message .= '                     in '
 					. ($item['file']
@@ -86,7 +83,7 @@ class Dumper extends \Tester\Dumper
 								self::$pathSeparator ?? DIRECTORY_SEPARATOR,
 								array_slice(explode(DIRECTORY_SEPARATOR, $item['file']), -self::$maxPathSegments)
 							)
-							. "($item[line])" . self::color('gray') . ' '
+							. "($item[line])" . self::color('gray') . ' ' // @phpstan-ignore offsetAccess.notFound
 						)
 						: '[internal function]'
 					)

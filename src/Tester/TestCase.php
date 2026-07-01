@@ -22,7 +22,7 @@ abstract class TestCase extends \Tester\TestCase
 	) {}
 
 
-	public function testRequests()
+	public function testRequests(): void
 	{
 		$test = Test::createFromArray($this->config);
 		foreach ($test->requests as $request) {
@@ -66,7 +66,7 @@ abstract class TestCase extends \Tester\TestCase
 	}
 
 
-	protected function request(Request $request)
+	protected function request(Request $request): void
 	{
 		if ($request->refresh === true && $this->refreshCallback) {
 			($this->refreshCallback)();
@@ -89,7 +89,7 @@ abstract class TestCase extends \Tester\TestCase
 		if ($request->identity) {
 			$identity = $this->identityCallback
 				? ($this->identityCallback)($request)
-				: new SimpleIdentity($request->identity->id, (array)$request->identity->roles);
+				: new SimpleIdentity($request->identity->id, $request->identity->roles);
 			$testRequest->setIdentity($identity);
 		}
 		// Form
@@ -135,12 +135,12 @@ abstract class TestCase extends \Tester\TestCase
 	}
 
 
-	protected function setUpRequest()
+	protected function setUpRequest(): void
 	{
 	}
 
 
-	protected function tearDownRequest()
+	protected function tearDownRequest(): void
 	{
 	}
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Stepapo\RequestTester\DI;
 
 use Nette\DI\CompilerExtension;
+use Nette\DI\Definitions\ServiceDefinition;
 use Nette\DI\Definitions\Statement;
 use Nette\Http\UrlScript;
 use Stepapo\RequestTester\Mock\HttpRequest;
@@ -17,8 +18,9 @@ class RequestTesterExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 		if ($builder->hasDefinition('http.request')) {
-			$builder->getDefinition('http.request')
-				->setFactory(HttpRequest::class, [new Statement(UrlScript::class)]);
+			/** @var ServiceDefinition $httpRequestDefinition */
+			$httpRequestDefinition = $builder->getDefinition('http.request');
+			$httpRequestDefinition->setFactory(HttpRequest::class, [new Statement(UrlScript::class)]);
 		}
 //		if ($builder->hasDefinition('session.session')) {
 //			$builder->getDefinition('session.session')

@@ -30,8 +30,8 @@ class Environment extends \Tester\Environment
 		$annotations = self::getTestAnnotations();
 		self::$checkAssertions = !isset($annotations['outputmatch']) && !isset($annotations['outputmatchfile']);
 
-		if (getenv(self::COVERAGE) && getenv(self::COVERAGE_ENGINE)) {
-			Collector::start(getenv(self::COVERAGE), getenv(self::COVERAGE_ENGINE));
+		if (getenv(self::VariableCoverage) && getenv(self::VariableCoverageEngine)) {
+			Collector::start((string) getenv(self::VariableCoverage), (string) getenv(self::VariableCoverageEngine));
 		}
 
 		if (getenv('TERMINAL_EMULATOR') === 'JetBrains-JediTerm') {
@@ -50,7 +50,7 @@ class Environment extends \Tester\Environment
 
 		set_exception_handler([__CLASS__, 'handleException']);
 
-		set_error_handler(function (int $severity, string $message, string $file, int $line): ?bool {
+		set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
 			if (in_array($severity, [E_RECOVERABLE_ERROR, E_USER_ERROR], true) || ($severity & error_reporting()) === $severity) {
 				self::handleException(new \ErrorException($message, 0, $severity, $file, $line));
 			}

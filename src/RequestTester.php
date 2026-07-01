@@ -107,11 +107,11 @@ class RequestTester
 
 	protected function setupHttpRequest(TestRequest $request): void
 	{
-		$this->httpRequest->method = ($request->post) ? 'POST' : $request->methodName;
-		$this->httpRequest->headers = $request->headers + $this->httpRequest->headers;
-		$this->httpRequest->post = $request->post;
-		$this->httpRequest->url = new UrlScript($request->url);
-		$this->httpRequest->rawBodyCallback = fn() => $request->rawBody;
+		$this->httpRequest->method = ($request->post) ? 'POST' : $request->methodName; // @phpstan-ignore property.notFound
+		$this->httpRequest->headers += $request->headers; // @phpstan-ignore property.notFound
+		$this->httpRequest->post = $request->post; // @phpstan-ignore property.notFound
+		$this->httpRequest->url = new UrlScript($request->url); // @phpstan-ignore property.notFound
+		$this->httpRequest->rawBodyCallback = fn() => $request->rawBody; // @phpstan-ignore property.notFound
 	}
 
 
@@ -173,7 +173,7 @@ class RequestTester
 	}
 
 
-	private function prepareValue($wildcard, bool $toString = false)
+	private function prepareValue(mixed $wildcard, bool $toString = false): mixed
 	{
 		switch ($wildcard) {
 			case 'DATE_YESTERDAY':

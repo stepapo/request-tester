@@ -22,7 +22,7 @@ requests:
                 password: secret1234
         asserts:
             renders: This login does not exist
-    with wrong passowrd:  
+    with wrong passowrd:
         form:
             name: signupForm
             post:
@@ -116,7 +116,7 @@ Test is defined by `name` and list of `requests`.
 ```neon
 name: authorization
 requests:
-    example request: # include Request configuration    
+    example request: # include Request configuration
     another example request: # include Request configuration
 ```
 
@@ -130,7 +130,7 @@ identity: # include Identity configuration
 form: # include Form configuration
 asserts: # include Assert configuration
 requests:
-    example subrequest: # include Request configuration    
+    example subrequest: # include Request configuration
     another example subrequest: # include Request configuration
 ```
 

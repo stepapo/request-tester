@@ -8,10 +8,10 @@ use Nette;
 class SessionSection extends Nette\Http\SessionSection
 {
 
-	private $data = [];
+	private array $data = [];
 
 
-	public function __construct(Nette\Http\Session $session, $name)
+	public function __construct(Nette\Http\Session $session, string $name)
 	{
 		parent::__construct($session, $name);
 	}
@@ -23,7 +23,7 @@ class SessionSection extends Nette\Http\SessionSection
 	}
 
 
-	public function __set(string $name, $value): void
+	public function __set(string $name, mixed $value): void
 	{
 		$this->data[$name] = $value;
 	}
