@@ -10,6 +10,7 @@ use Nette\Application\Responses\JsonResponse;
 use Nette\Application\Responses\TextResponse;
 use Tester\Assert;
 use Tester\Dumper;
+use function func_num_args, is_array, is_object, is_string;
 
 
 class TestResult
@@ -21,7 +22,8 @@ class TestResult
 		private ?Response $response,
 		private ?BadRequestException $badRequestException,
 		public string $name,
-	) {}
+	) {
+	}
 
 
 	public function getResponse(): Response

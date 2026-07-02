@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Stepapo\RequestTester\Config;
 
 use ArrayObject;
+use function array_key_exists, is_array;
 
 
 class RequestList extends ArrayObject
 {
 	public static function createFromArray(array $config): self
 	{
-		$list = new self();
+		$list = new self;
 		$list->addFromArray($config);
 		return $list;
 	}

@@ -10,6 +10,7 @@ use Stepapo\RequestTester\Config\Test;
 use Stepapo\RequestTester\RequestTester;
 use Tester\AssertException;
 use Tester\Dumper;
+use function sprintf;
 
 
 abstract class TestCase extends \Tester\TestCase
@@ -19,7 +20,8 @@ abstract class TestCase extends \Tester\TestCase
 		private RequestTester $requestTester,
 		private ?\Closure $identityCallback = null,
 		private ?\Closure $refreshCallback = null,
-	) {}
+	) {
+	}
 
 
 	public function testRequests(): void
@@ -32,7 +34,7 @@ abstract class TestCase extends \Tester\TestCase
 			$this->setUpRequest();
 			try {
 				$this->request($request);
-			} catch (\Exception $e) {
+			} catch (\Throwable $e) {
 				if ($e instanceof AssertException) {
 					throw $e->setMessage(sprintf(
 						'%s: %s',
@@ -45,7 +47,7 @@ abstract class TestCase extends \Tester\TestCase
 						sprintf(
 							'%s: %s',
 							Dumper::color('red', $request->name),
-							Dumper::color('white', 'deadlock detected, run again')
+							Dumper::color('white', 'deadlock detected, run again'),
 						),
 						null,
 						null,
@@ -102,13 +104,13 @@ abstract class TestCase extends \Tester\TestCase
 				}
 				$testRequest->setForm(
 					$request->form->name,
-					$this->requestTester->prepareValues((array)$request->form->post + ($send ? ['send' => '1'] : []), true),
+					$this->requestTester->prepareValues((array) $request->form->post + ($send ? ['send' => '1'] : []), true),
 				);
 			}
 		}
 		// Post
 		if ($request->post) {
-			$testRequest->setPost($this->requestTester->prepareValues((array)$request->post, true));
+			$testRequest->setPost($this->requestTester->prepareValues((array) $request->post, true));
 		}
 		$result = $this->requestTester->execute($testRequest, $request->name);
 		// Asserts
@@ -120,12 +122,12 @@ abstract class TestCase extends \Tester\TestCase
 			$result = $this->requestTester->getFinalResult($result, $identity);
 			if ($request->asserts->renders) {
 				foreach ($request->asserts->renders as $renders) {
-					$result->assertRenders((array)$renders);
+					$result->assertRenders((array) $renders);
 				}
 			}
 			if ($request->asserts->notRenders) {
 				foreach ($request->asserts->notRenders as $notRenders) {
-					$result->assertNotRenders((array)$notRenders);
+					$result->assertNotRenders((array) $notRenders);
 				}
 			}
 			if ($request->asserts->json !== null) {

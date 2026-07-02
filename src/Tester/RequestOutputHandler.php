@@ -9,6 +9,8 @@ use Tester\Dumper;
 use Tester\Runner\OutputHandler;
 use Tester\Runner\Runner;
 use Tester\Runner\Test;
+use function sprintf;
+use const DIRECTORY_SEPARATOR;
 
 
 class RequestOutputHandler implements OutputHandler
@@ -37,7 +39,7 @@ class RequestOutputHandler implements OutputHandler
 		private bool $displaySkipped = false,
 		string $file = 'php://output',
 		private bool $ciderMode = false,
-		private array $setups = []
+		private array $setups = [],
 	) {
 		$this->file = fopen($file, 'w');
 		$this->symbols = [
@@ -69,7 +71,7 @@ class RequestOutputHandler implements OutputHandler
 		$this->printer->printLine(
 			$this->runner->getInterpreter()->getShortInfo()
 			. ' | ' . $this->runner->getInterpreter()->getCommandLine()
-			. " | {$this->runner->threadCount} thread" . ($this->runner->threadCount > 1 ? 's' : '')
+			. " | {$this->runner->threadCount} thread" . ($this->runner->threadCount > 1 ? 's' : ''),
 		);
 		$this->printer->printLine('');
 		$m = '';
@@ -80,11 +82,11 @@ class RequestOutputHandler implements OutputHandler
 			$this->printer->printLine($m);
 			$this->printer->printLine('');
 		}
-//		fwrite($this->file, $this->runner->getInterpreter()->getShortInfo()
-//			. ' | ' . $this->runner->getInterpreter()->getCommandLine()
-//			. " | {$this->runner->threadCount} thread" . ($this->runner->threadCount > 1 ? 's' : '') . "\n\n"
-//			. ($m ? $m . "\n\n" : "")
-//		);
+		//		fwrite($this->file, $this->runner->getInterpreter()->getShortInfo()
+		//			. ' | ' . $this->runner->getInterpreter()->getCommandLine()
+		//			. " | {$this->runner->threadCount} thread" . ($this->runner->threadCount > 1 ? 's' : '') . "\n\n"
+		//			. ($m ? $m . "\n\n" : "")
+		//		);
 	}
 
 
@@ -95,7 +97,7 @@ class RequestOutputHandler implements OutputHandler
 		} elseif (strpos($test->getFile(), $this->baseDir) !== 0) {
 			$common = array_intersect_assoc(
 				explode(DIRECTORY_SEPARATOR, $this->baseDir),
-				explode(DIRECTORY_SEPARATOR, $test->getFile())
+				explode(DIRECTORY_SEPARATOR, $test->getFile()),
 			);
 			$this->baseDir = '';
 			$prev = 0;
@@ -118,7 +120,7 @@ class RequestOutputHandler implements OutputHandler
 		$config = substr(
 			$test->getSignature(),
 			strpos($test->getSignature(), '=') + 1,
-			strpos($test->getSignature(), '|') - strpos($test->getSignature(), '=') - 1
+			strpos($test->getSignature(), '|') - strpos($test->getSignature(), '=') - 1,
 		);
 
 		$moduleName = substr(
@@ -134,7 +136,7 @@ class RequestOutputHandler implements OutputHandler
 			$configWithIcon = str_replace(
 				$moduleName . ' -',
 				Dumper::color($this->setups[$moduleName]['color'], $this->setups[$moduleName]['icon']),
-				$config
+				$config,
 			);
 		}
 
@@ -150,7 +152,7 @@ class RequestOutputHandler implements OutputHandler
 
 		$message = str_replace("\n", "\n   ", trim((string) $test->message)) . "\n";
 		if ($test->getResult() === Test::Failed) {
-			$write .= Dumper::color('red', "                        ") . "$message";
+			$write .= Dumper::color('red', '                        ') . "$message";
 		} elseif ($test->getResult() === Test::Skipped && $this->displaySkipped) {
 			$write .= "   Skipped: $message";
 		}
@@ -172,7 +174,7 @@ class RequestOutputHandler implements OutputHandler
 			. "$this->totalRequestCount requests, "
 			. ($this->count !== $run ? ($this->count - $run) . ' not run, ' : '')
 			. sprintf('%0.1f', $t = $this->time + microtime(true)) . 's total, '
-			. sprintf('%0.3f', $t / $this->totalRequestCount * $this->runner->threadCount) . 's per request)' . Dumper::color() . "\n") ;
+			. sprintf('%0.3f', $t / $this->totalRequestCount * $this->runner->threadCount) . 's per request)' . Dumper::color() . "\n");
 	}
 
 

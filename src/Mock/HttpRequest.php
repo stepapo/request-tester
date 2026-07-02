@@ -7,6 +7,8 @@ use Nette\Http\FetchSite;
 use Nette\Http\Request;
 use Nette\Http\UrlImmutable;
 use Nette\Http\UrlScript;
+use function func_num_args;
+use const CASE_LOWER;
 
 
 /**
@@ -28,8 +30,8 @@ use Nette\Http\UrlScript;
  */
 class HttpRequest extends Request
 {
-	public  array $headers;
-	public  ?\Closure $rawBodyCallback;
+	public array $headers;
+	public ?\Closure $rawBodyCallback;
 
 
 	/** copy from Nette\Http\Request needed to override readonly */

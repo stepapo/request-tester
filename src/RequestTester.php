@@ -22,6 +22,7 @@ use Nette\Utils\DateTime;
 use Stepapo\RequestTester\Mock\HttpRequest;
 use Tester\Assert;
 use Tester\Expect;
+use function is_array;
 
 
 class RequestTester
@@ -33,7 +34,8 @@ class RequestTester
 		private Application $application,
 		private IRequest $httpRequest,
 		private User $user,
-	) {}
+	) {
+	}
 
 
 	public function execute(TestRequest $testRequest, string $name): TestResult
@@ -53,7 +55,7 @@ class RequestTester
 					$cause = 'BadRequestException with code ' . $badRequestException->getCode() . ' and message "' . $badRequestException->getMessage() . '"';
 				} else {
 					assert($response !== null);
-					$cause = get_class($response);
+					$cause = $response::class;
 				}
 				Assert::fail('Signal has not been processed at all, received ' . $cause);
 			}
@@ -151,7 +153,7 @@ class RequestTester
 		$params = $this->router->match($httpRequest);
 
 		$presenter = $params[Presenter::PresenterKey] ?? 'Error';
-		$params = isset($params[Presenter::PresenterKey]) ? $params : ['exception' => new BadRequestException()];
+		$params = isset($params[Presenter::PresenterKey]) ? $params : ['exception' => new BadRequestException];
 		unset($params[Presenter::PresenterKey]);
 
 		$request = $this->createRequest($url, $presenter)
@@ -177,23 +179,23 @@ class RequestTester
 	{
 		switch ($wildcard) {
 			case 'DATE_YESTERDAY':
-				return (new DateTime('yesterday'))->format('Y-m-d');
+				return new DateTime('yesterday')->format('Y-m-d');
 			case 'DATE_TODAY':
-				return (new DateTime())->format('Y-m-d');
+				return new DateTime()->format('Y-m-d');
 			case 'DATE_TOMORROW':
-				return (new DateTime('tomorrow'))->format('Y-m-d');
+				return new DateTime('tomorrow')->format('Y-m-d');
 			case 'DOW_YESTERDAY':
-				return (new DateTime('yesterday'))->format('N');
+				return new DateTime('yesterday')->format('N');
 			case 'DOW_TODAY':
-				return (new DateTime())->format('N');
+				return new DateTime()->format('N');
 			case 'DOW_TOMORROW':
-				return (new DateTime('tomorrow'))->format('N');
+				return new DateTime('tomorrow')->format('N');
 			case 'WEEK_MONDAY_LAST':
-				return (new DateTime('monday last week'))->format('Y-m-d');
+				return new DateTime('monday last week')->format('Y-m-d');
 			case 'WEEK_MONDAY_THIS':
-				return (new DateTime('monday this week'))->format('Y-m-d');
+				return new DateTime('monday this week')->format('Y-m-d');
 			case 'WEEK_MONDAY_NEXT':
-				return (new DateTime('monday next week'))->format('Y-m-d');
+				return new DateTime('monday next week')->format('Y-m-d');
 			case 'EXPECT_INT':
 				return Expect::type('int');
 			default:

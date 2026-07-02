@@ -14,9 +14,14 @@ final class Test extends Config
 	/** @var Request[] */ #[ArrayOfType(Request::class)] public RequestList|array $requests;
 
 
-	public static function createFromArray(mixed $config = [], mixed $key = null, bool $skipDefaults = false, mixed $parentKey = null): static
+	public static function createFromArray(
+		mixed $config = [],
+		mixed $key = null,
+		bool $skipDefaults = false,
+		mixed $parentKey = null,
+	): static
 	{
-		$data = new Test;
+		$data = new self;
 		$data->name = $config['name'];
 		$data->requests = RequestList::createFromArray($config);
 		return $data;

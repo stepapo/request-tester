@@ -3,11 +3,12 @@
 namespace Stepapo\RequestTester\Mock;
 
 use Nette;
+use function array_key_exists;
+use const E_USER_NOTICE;
 
 
 class SessionSection extends Nette\Http\SessionSection
 {
-
 	private array $data = [];
 
 
@@ -66,5 +67,4 @@ class SessionSection extends Nette\Http\SessionSection
 	{
 		$this->data = [];
 	}
-
 }

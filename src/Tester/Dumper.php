@@ -7,6 +7,8 @@ namespace Stepapo\RequestTester\Tester;
 use Tester\Assert;
 use Tester\AssertException;
 use Tester\Helpers;
+use function array_slice, is_array, is_object, is_string, strlen;
+use const DIRECTORY_SEPARATOR;
 
 
 class Dumper extends \Tester\Dumper
@@ -43,7 +45,7 @@ class Dumper extends \Tester\Dumper
 				for (; $i && $i < strlen($actual) && $actual[$i - 1] >= "\x80" && $actual[$i] >= "\x80" && $actual[$i] < "\xC0"; $i--);
 				$i = max(0, min(
 					$i - (int) (self::$maxLength / 3), // try to display 1/3 of shorter string
-					max(strlen($actual), strlen($expected)) - self::$maxLength + 3 // 3 = length of ...
+					max(strlen($actual), strlen($expected)) - self::$maxLength + 3, // 3 = length of ...
 				));
 				if ($i) {
 					$expected = substr_replace($expected, '...', 0, $i);
@@ -67,7 +69,7 @@ class Dumper extends \Tester\Dumper
 				$message .= static::dumpException($e->getPrevious());
 			}
 		} else {
-			$message = ($e instanceof \ErrorException ? Helpers::errorTypeToString($e->getSeverity()) : get_class($e))
+			$message = ($e instanceof \ErrorException ? Helpers::errorTypeToString($e->getSeverity()) : $e::class)
 				. ': ' . preg_replace('#[\x00-\x09\x0B-\x1F]+#', ' ', $e->getMessage()) . "\n";
 
 			foreach ($trace as $item) {
@@ -81,7 +83,7 @@ class Dumper extends \Tester\Dumper
 							($item['file'] === $testFile ? self::color('white') : '')
 							. implode(
 								self::$pathSeparator ?? DIRECTORY_SEPARATOR,
-								array_slice(explode(DIRECTORY_SEPARATOR, $item['file']), -self::$maxPathSegments)
+								array_slice(explode(DIRECTORY_SEPARATOR, $item['file']), -self::$maxPathSegments),
 							)
 							. "($item[line])" . self::color('gray') . ' ' // @phpstan-ignore offsetAccess.notFound
 						)

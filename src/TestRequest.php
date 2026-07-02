@@ -8,6 +8,7 @@ use Nette\Forms\Controls\CsrfProtection;
 use Nette\Http\Session;
 use Nette\Security\IIdentity;
 use Nette\Utils\Json;
+use function is_array;
 
 
 class TestRequest
@@ -25,8 +26,8 @@ class TestRequest
 		public string $presenterName,
 		private Session $session,
 	) {
-//		$this->session->setFakeId('stepapo.id');
-		$this->session->getSection(CsrfProtection::class)->token = 'stepapo.token';
+		//		$this->session->setFakeId('stepapo.id');
+				$this->session->getSection(CsrfProtection::class)->token = 'stepapo.token';
 	}
 
 
@@ -56,7 +57,7 @@ class TestRequest
 		$this->parameters['do'] = "$formName-submit";
 		if ($withProtection) {
 			$token = 'abcdefghij' . base64_encode(sha1(('stepapo.token' ^ $this->session->getId()) . 'abcdefghij', true));
-			$post = $post + ['_token_' => $token];
+			$post += ['_token_' => $token];
 		}
 		$this->post = $post;
 		return $this;

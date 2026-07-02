@@ -8,6 +8,8 @@ use Tester\Assert;
 use Tester\AssertException;
 use Tester\CodeCoverage\Collector;
 use Tester\Runner\Job;
+use function in_array;
+use const E_ALL, E_COMPILE_ERROR, E_CORE_ERROR, E_ERROR, E_PARSE, E_RECOVERABLE_ERROR, E_USER_ERROR;
 
 
 class Environment extends \Tester\Environment
@@ -48,17 +50,20 @@ class Environment extends \Tester\Environment
 		ini_set('html_errors', '0');
 		ini_set('log_errors', '0');
 
-		set_exception_handler([__CLASS__, 'handleException']);
+		set_exception_handler([self::class, 'handleException']);
 
 		set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
-			if (in_array($severity, [E_RECOVERABLE_ERROR, E_USER_ERROR], true) || ($severity & error_reporting()) === $severity) {
+			if (
+				in_array($severity, [E_RECOVERABLE_ERROR, E_USER_ERROR], true)
+				|| ($severity & error_reporting()) === $severity
+			) {
 				self::handleException(new \ErrorException($message, 0, $severity, $file, $line));
 			}
 			return false;
 		});
 
 		register_shutdown_function(function (): void {
-			Assert::$onFailure = [__CLASS__, 'handleException'];
+			Assert::$onFailure = [self::class, 'handleException'];
 
 			$error = error_get_last();
 			register_shutdown_function(function () use ($error): void {
