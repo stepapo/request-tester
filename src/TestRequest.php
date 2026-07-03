@@ -26,8 +26,8 @@ class TestRequest
 		public string $presenterName,
 		private Session $session,
 	) {
-		//		$this->session->setFakeId('stepapo.id');
-				$this->session->getSection(CsrfProtection::class)->token = 'stepapo.token';
+		//$this->session->setFakeId('stepapo.id');
+		$this->session->getSection(CsrfProtection::class)->token = 'stepapo.token';
 	}
 
 
