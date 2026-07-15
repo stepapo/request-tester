@@ -82,11 +82,13 @@ class RequestOutputHandler implements OutputHandler
 			$this->printer->printLine($m);
 			$this->printer->printLine('');
 		}
-		//		fwrite($this->file, $this->runner->getInterpreter()->getShortInfo()
-		//			. ' | ' . $this->runner->getInterpreter()->getCommandLine()
-		//			. " | {$this->runner->threadCount} thread" . ($this->runner->threadCount > 1 ? 's' : '') . "\n\n"
-		//			. ($m ? $m . "\n\n" : "")
-		//		);
+		/*
+		fwrite($this->file, $this->runner->getInterpreter()->getShortInfo()
+			. ' | ' . $this->runner->getInterpreter()->getCommandLine()
+			. " | {$this->runner->threadCount} thread" . ($this->runner->threadCount > 1 ? 's' : '') . "\n\n"
+			. ($m ? $m . "\n\n" : "")
+		);
+		*/
 	}
 
 

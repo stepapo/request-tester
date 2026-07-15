@@ -15,6 +15,10 @@ use function sprintf;
 
 abstract class TestCase extends \Tester\TestCase
 {
+	/**
+	 * @param \Closure(Request): SimpleIdentity|null $identityCallback
+	 * @param \Closure(): void|null $refreshCallback
+	 */
 	public function __construct(
 		private array $config,
 		private RequestTester $requestTester,

@@ -19,17 +19,19 @@ class RequestTesterExtension extends CompilerExtension
 		$builder = $this->getContainerBuilder();
 		if ($builder->hasDefinition('http.request')) {
 			$httpRequestDefinition = $builder->getDefinition('http.request');
-			\assert($httpRequestDefinition instanceof ServiceDefinition);
+			assert($httpRequestDefinition instanceof ServiceDefinition);
 			$httpRequestDefinition->setFactory(HttpRequest::class, [new Statement(UrlScript::class)]);
 		}
-		//		if ($builder->hasDefinition('session.session')) {
-		//			$builder->getDefinition('session.session')
-		//				->setFactory(Session::class);
-		//		}
-		//		if ($builder->hasDefinition('security.user')) {
-		//			$builder->getDefinition('security.user')
-		//				->setFactory(User::class);
-		//		}
+		/*
+		if ($builder->hasDefinition('session.session')) {
+			$builder->getDefinition('session.session')
+				->setFactory(Session::class);
+		}
+		if ($builder->hasDefinition('security.user')) {
+			$builder->getDefinition('security.user')
+				->setFactory(User::class);
+		}
+		*/
 				$builder->addDefinition($this->prefix('requestTester.tester'))
 					->setFactory(RequestTester::class);
 	}

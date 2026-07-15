@@ -31,7 +31,7 @@ use const CASE_LOWER;
 class HttpRequest extends Request
 {
 	public array $headers;
-	public ?\Closure $rawBodyCallback;
+	/** @var \Closure(): ?string|null */ public ?\Closure $rawBodyCallback;
 
 
 	/** copy from Nette\Http\Request needed to override readonly */
