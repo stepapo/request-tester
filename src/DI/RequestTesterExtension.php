@@ -32,7 +32,7 @@ class RequestTesterExtension extends CompilerExtension
 				->setFactory(User::class);
 		}
 		*/
-				$builder->addDefinition($this->prefix('requestTester.tester'))
-					->setFactory(RequestTester::class);
+		$builder->addDefinition($this->prefix('requestTester.tester'))
+			->setFactory(RequestTester::class);
 	}
 }
