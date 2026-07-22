@@ -53,8 +53,12 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $return = [];
 
-foreach (Nette\Utils\Finder::findFiles('*.neon')->from(__DIR__ . '/config') as $file) {
-    $config = (array) Nette\Neon\Neon::decode(Nette\Utils\FileSystem::read($file));
+foreach (Nette\Utils\Finder::findFiles(['*.yml', '*.neon'])->from(__DIR__ . '/config') as $file) {
+    $config = match($ext = pathinfo($file->getFilename(), PATHINFO_EXTENSION)) {
+        'neon' => (array) Neon::decode(FileSystem::read((string) $file)),
+        'yml' => yaml_parse_file($file->getRealPath()),
+        default => throw new InvalidArgumentException("File extension '$ext' is not supported."),
+    };
     $return[$config['name']] = $config;
 }
 
@@ -113,7 +117,7 @@ NEON files are used to configure test scenarios. They can be separated in follow
 
 Test is defined by `name` and list of `requests`.
 
-```neon
+```yml
 name: authorization
 requests:
     example request: # include Request configuration
@@ -124,7 +128,7 @@ requests:
 
 Request configuration requires `path` and `asserts`. Use `identity` to specify which user should be logged. Use `form` if you want to submit a form. `requests` can be used to specify subrequests that inherit parent request configuration and override some of it with their own if needed.
 
-```neon
+```yml
 path: auth
 identity: # include Identity configuration
 form: # include Form configuration
@@ -138,7 +142,7 @@ requests:
 
 `id` of logged user is required.
 
-```neon
+```yml
 id: 1
 roles:
     - user
@@ -147,7 +151,7 @@ roles:
 
 ### Form
 
-```neon
+```yml
 name: signupForm
 post:
     login: name@domain.com
@@ -158,13 +162,13 @@ post:
 
 Validating bad request:
 
-```neon
+```yml
 httpCode: 404
 ```
 
 Validating what is rendered in browser or not:
 
-```neon
+```yml
 renders:
     - Login successful
 notRenders:
@@ -173,7 +177,7 @@ notRenders:
 
 Validating result of API call:
 
-```neon
+```yml
 json:
     id: 1
     name: John Doe
